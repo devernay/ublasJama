@@ -1,0 +1,124 @@
+add to ublasJama the following fnctionality from eigen2, which is another C++ port of Jama:
+
+#if 0
+// code from eigen2 http://websvn.kde.org/trunk/kdesupport/eigen2 http://eigen.tuxfamily.org/
+/** \returns the solution of \f$ A x = b \f$ using the current SVD decomposition of A.
+  * The parts of the solution corresponding to zero singular values are ignored.
+  *
+  * \sa MatrixBase::svd(), LU::solve(), LLT::solve()
+  */
+template<typename MatrixType>
+template<typename OtherDerived, typename ResultType>
+bool SVD<MatrixType>::solve(const MatrixBase<OtherDerived> &b, ResultType* result) const
+{
+  const int rows = m_matU.rows();
+  ei_assert(b.rows() == rows);
+
+  Scalar maxVal = m_sigma.cwise().abs().maxCoeff();
+  for (int j=0; j<b.cols(); ++j)
+  {
+    Matrix<Scalar,MatrixUType::RowsAtCompileTime,1> aux = m_matU.transpose() * b.col(j);
+
+    for (int i = 0; i <m_matU.cols(); ++i)
+    {
+      Scalar si = m_sigma.coeff(i);
+      if (ei_isMuchSmallerThan(ei_abs(si),maxVal))
+        aux.coeffRef(i) = 0;
+      else
+        aux.coeffRef(i) /= si;
+    }
+
+    result->col(j) = m_matV * aux;
+  }
+  return true;
+}
+
+/** Computes the polar decomposition of the matrix, as a product unitary x positive.
+  *
+  * If either pointer is zero, the corresponding computation is skipped.
+  *
+  * Only for square matrices.
+  *
+  * \sa computePositiveUnitary(), computeRotationScaling()
+  */
+template<typename MatrixType>
+template<typename UnitaryType, typename PositiveType>
+void SVD<MatrixType>::computeUnitaryPositive(UnitaryType *unitary,
+                                             PositiveType *positive) const
+{
+  ei_assert(m_matU.cols() == m_matV.cols() && "Polar decomposition is only for square matrices");
+  if(unitary) *unitary = m_matU * m_matV.adjoint();
+  if(positive) *positive = m_matV * m_sigma.asDiagonal() * m_matV.adjoint();
+}
+
+/** Computes the polar decomposition of the matrix, as a product positive x unitary.
+  *
+  * If either pointer is zero, the corresponding computation is skipped.
+  *
+  * Only for square matrices.
+  *
+  * \sa computeUnitaryPositive(), computeRotationScaling()
+  */
+template<typename MatrixType>
+template<typename UnitaryType, typename PositiveType>
+void SVD<MatrixType>::computePositiveUnitary(UnitaryType *positive,
+                                             PositiveType *unitary) const
+{
+  ei_assert(m_matU.rows() == m_matV.rows() && "Polar decomposition is only for square matrices");
+  if(unitary) *unitary = m_matU * m_matV.adjoint();
+  if(positive) *positive = m_matU * m_sigma.asDiagonal() * m_matU.adjoint();
+}
+
+/** decomposes the matrix as a product rotation x scaling, the scaling being
+  * not necessarily positive.
+  *
+  * If either pointer is zero, the corresponding computation is skipped.
+  *
+  * This method requires the Geometry module.
+  *
+  * \sa computeScalingRotation(), computeUnitaryPositive()
+  */
+template<typename MatrixType>
+template<typename RotationType, typename ScalingType>
+void SVD<MatrixType>::computeRotationScaling(RotationType *rotation, ScalingType *scaling) const
+{
+  ei_assert(m_matU.rows() == m_matV.rows() && "Polar decomposition is only for square matrices");
+  Scalar x = (m_matU * m_matV.adjoint()).determinant(); // so x has absolute value 1
+  Matrix<Scalar, MatrixType::RowsAtCompileTime, 1> sv(m_sigma);
+  sv.coeffRef(0) *= x;
+  if(scaling) scaling->lazyAssign(m_matV * sv.asDiagonal() * m_matV.adjoint());
+  if(rotation)
+  {
+    MatrixType m(m_matU);
+    m.col(0) /= x;
+    rotation->lazyAssign(m * m_matV.adjoint());
+  }
+}
+
+/** decomposes the matrix as a product scaling x rotation, the scaling being
+  * not necessarily positive.
+  *
+  * If either pointer is zero, the corresponding computation is skipped.
+  *
+  * This method requires the Geometry module.
+  *
+  * \sa computeRotationScaling(), computeUnitaryPositive()
+  */
+template<typename MatrixType>
+template<typename ScalingType, typename RotationType>
+void SVD<MatrixType>::computeScalingRotation(ScalingType *scaling, RotationType *rotation) const
+{
+  ei_assert(m_matU.rows() == m_matV.rows() && "Polar decomposition is only for square matrices");
+  Scalar x = (m_matU * m_matV.adjoint()).determinant(); // so x has absolute value 1
+  Matrix<Scalar, MatrixType::RowsAtCompileTime, 1> sv(m_sigma);
+  sv.coeffRef(0) *= x;
+  if(scaling) scaling->lazyAssign(m_matU * sv.asDiagonal() * m_matU.adjoint());
+  if(rotation)
+  {
+    MatrixType m(m_matU);
+    m.col(0) /= x;
+    rotation->lazyAssign(m * m_matV.adjoint());
+  }
+}
+
+#endif

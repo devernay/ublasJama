@@ -1,0 +1,17 @@
+This ublasJama 1.0.2.0, based on Jama 1.0.2
+
+ublasJama is translation of the public domain Jama (Java Matrix
+Package <http://math.nist.gov/javanumerics/jama/>) 1.0.2 to C++ using
+boost::ublas for the linear algebra.
+
+Author of the ublas translation: Frederic Devernay <Frederic.Devernay@inria.fr>
+
+Documentation: see the Jama documentation <http://math.nist.gov/javanumerics/jama/doc/>.
+
+Original Authors: see the Jama list of authors <http://math.nist.gov/javanumerics/jama/#Authors>.
+
+No optimization of the original code was done, but the functionality is here.
+
+There are two test programs:
+- TestMatrix, in subdirectory test  - the original Jama tests, where only the relevant tests were kept.
+- MagicSquareExample, in subdirectory examples

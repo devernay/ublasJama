@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		1E9F92DA0FB1F82300F8AC18 /* all */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 1E9F92F60FB1F85000F8AC18 /* Build configuration list for PBXAggregateTarget "all" */;
+			buildPhases = (
+			);
+			dependencies = (
+				1E9F92DE0FB1F82800F8AC18 /* PBXTargetDependency */,
+				1E9F92E00FB1F82C00F8AC18 /* PBXTargetDependency */,
+				1E9F92E20FB1F82F00F8AC18 /* PBXTargetDependency */,
+			);
+			name = all;
+			productName = all;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		1E9F91C80FB1D32A00F8AC18 /* libublasJama.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libublasJama.a */; };
+		1EBDAB9E0FB09C8B00B91217 /* CholeskyDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB940FB09C8B00B91217 /* CholeskyDecomposition.cpp */; };
+		1EBDAB9F0FB09C8B00B91217 /* CholeskyDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB950FB09C8B00B91217 /* CholeskyDecomposition.hpp */; };
+		1EBDABA00FB09C8B00B91217 /* EigenvalueDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB960FB09C8B00B91217 /* EigenvalueDecomposition.cpp */; };
+		1EBDABA10FB09C8B00B91217 /* EigenvalueDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB970FB09C8B00B91217 /* EigenvalueDecomposition.hpp */; };
+		1EBDABA20FB09C8B00B91217 /* LUDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB980FB09C8B00B91217 /* LUDecomposition.cpp */; };
+		1EBDABA30FB09C8B00B91217 /* LUDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB990FB09C8B00B91217 /* LUDecomposition.hpp */; };
+		1EBDABA40FB09C8B00B91217 /* QRDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB9A0FB09C8B00B91217 /* QRDecomposition.cpp */; };
+		1EBDABA50FB09C8B00B91217 /* QRDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB9B0FB09C8B00B91217 /* QRDecomposition.hpp */; };
+		1EBDABA60FB09C8B00B91217 /* SingularValueDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB9C0FB09C8B00B91217 /* SingularValueDecomposition.cpp */; };
+		1EBDABA70FB09C8B00B91217 /* SingularValueDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB9D0FB09C8B00B91217 /* SingularValueDecomposition.hpp */; };
+		1EBDABBB0FB09D4200B91217 /* MagicSquareExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDABBA0FB09D4200B91217 /* MagicSquareExample.cpp */; };
+		1EBDABBE0FB09D4C00B91217 /* TestMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDABBD0FB09D4C00B91217 /* TestMatrix.cpp */; };
+		1EBDAD4D0FB1B40000B91217 /* libublasJama.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libublasJama.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1E9F91CA0FB1D33D00F8AC18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
+			remoteInfo = ublasJama;
+		};
+		1E9F91CC0FB1D34400F8AC18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
+			remoteInfo = ublasJama;
+		};
+		1E9F92DD0FB1F82800F8AC18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
+			remoteInfo = ublasJama;
+		};
+		1E9F92DF0FB1F82C00F8AC18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EBDABAB0FB09D1C00B91217;
+			remoteInfo = TestMatrix;
+		};
+		1E9F92E10FB1F82F00F8AC18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EBDABB20FB09D2D00B91217;
+			remoteInfo = MagicSquareExample;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1EBDAB940FB09C8B00B91217 /* CholeskyDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CholeskyDecomposition.cpp; sourceTree = "<group>"; };
+		1EBDAB950FB09C8B00B91217 /* CholeskyDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CholeskyDecomposition.hpp; sourceTree = "<group>"; };
+		1EBDAB960FB09C8B00B91217 /* EigenvalueDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EigenvalueDecomposition.cpp; sourceTree = "<group>"; };
+		1EBDAB970FB09C8B00B91217 /* EigenvalueDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EigenvalueDecomposition.hpp; sourceTree = "<group>"; };
+		1EBDAB980FB09C8B00B91217 /* LUDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LUDecomposition.cpp; sourceTree = "<group>"; };
+		1EBDAB990FB09C8B00B91217 /* LUDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LUDecomposition.hpp; sourceTree = "<group>"; };
+		1EBDAB9A0FB09C8B00B91217 /* QRDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QRDecomposition.cpp; sourceTree = "<group>"; };
+		1EBDAB9B0FB09C8B00B91217 /* QRDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = QRDecomposition.hpp; sourceTree = "<group>"; };
+		1EBDAB9C0FB09C8B00B91217 /* SingularValueDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SingularValueDecomposition.cpp; sourceTree = "<group>"; };
+		1EBDAB9D0FB09C8B00B91217 /* SingularValueDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SingularValueDecomposition.hpp; sourceTree = "<group>"; };
+		1EBDABAC0FB09D1C00B91217 /* TestMatrix */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestMatrix; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EBDABB30FB09D2D00B91217 /* MagicSquareExample */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MagicSquareExample; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EBDABBA0FB09D4200B91217 /* MagicSquareExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagicSquareExample.cpp; sourceTree = "<group>"; };
+		1EBDABBD0FB09D4C00B91217 /* TestMatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestMatrix.cpp; sourceTree = "<group>"; };
+		D2AAC046055464E500DB518D /* libublasJama.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libublasJama.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1EBDABAA0FB09D1C00B91217 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EBDAD4D0FB1B40000B91217 /* libublasJama.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1EBDABB10FB09D2D00B91217 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E9F91C80FB1D32A00F8AC18 /* libublasJama.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D289987405E68DCB004EDB86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* ublasJama */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6A0FF2B0290797F04C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = ublasJama;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				1EBDABBC0FB09D4C00B91217 /* test */,
+				1EBDABB90FB09D4200B91217 /* examples */,
+				1EBDAB940FB09C8B00B91217 /* CholeskyDecomposition.cpp */,
+				1EBDAB950FB09C8B00B91217 /* CholeskyDecomposition.hpp */,
+				1EBDAB960FB09C8B00B91217 /* EigenvalueDecomposition.cpp */,
+				1EBDAB970FB09C8B00B91217 /* EigenvalueDecomposition.hpp */,
+				1EBDAB980FB09C8B00B91217 /* LUDecomposition.cpp */,
+				1EBDAB990FB09C8B00B91217 /* LUDecomposition.hpp */,
+				1EBDAB9A0FB09C8B00B91217 /* QRDecomposition.cpp */,
+				1EBDAB9B0FB09C8B00B91217 /* QRDecomposition.hpp */,
+				1EBDAB9C0FB09C8B00B91217 /* SingularValueDecomposition.cpp */,
+				1EBDAB9D0FB09C8B00B91217 /* SingularValueDecomposition.hpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC046055464E500DB518D /* libublasJama.a */,
+				1EBDABAC0FB09D1C00B91217 /* TestMatrix */,
+				1EBDABB30FB09D2D00B91217 /* MagicSquareExample */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1EBDABB90FB09D4200B91217 /* examples */ = {
+			isa = PBXGroup;
+			children = (
+				1EBDABBA0FB09D4200B91217 /* MagicSquareExample.cpp */,
+			);
+			path = examples;
+			sourceTree = "<group>";
+		};
+		1EBDABBC0FB09D4C00B91217 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				1EBDABBD0FB09D4C00B91217 /* TestMatrix.cpp */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
+		C6A0FF2B0290797F04C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D2AAC043055464E500DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EBDAB9F0FB09C8B00B91217 /* CholeskyDecomposition.hpp in Headers */,
+				1EBDABA10FB09C8B00B91217 /* EigenvalueDecomposition.hpp in Headers */,
+				1EBDABA30FB09C8B00B91217 /* LUDecomposition.hpp in Headers */,
+				1EBDABA50FB09C8B00B91217 /* QRDecomposition.hpp in Headers */,
+				1EBDABA70FB09C8B00B91217 /* SingularValueDecomposition.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1EBDABAB0FB09D1C00B91217 /* TestMatrix */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1EBDABB70FB09D2F00B91217 /* Build configuration list for PBXNativeTarget "TestMatrix" */;
+			buildPhases = (
+				1EBDABA90FB09D1C00B91217 /* Sources */,
+				1EBDABAA0FB09D1C00B91217 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1E9F91CD0FB1D34400F8AC18 /* PBXTargetDependency */,
+			);
+			name = TestMatrix;
+			productName = TestMatrix;
+			productReference = 1EBDABAC0FB09D1C00B91217 /* TestMatrix */;
+			productType = "com.apple.product-type.tool";
+		};
+		1EBDABB20FB09D2D00B91217 /* MagicSquareExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1EBDABB80FB09D2F00B91217 /* Build configuration list for PBXNativeTarget "MagicSquareExample" */;
+			buildPhases = (
+				1EBDABB00FB09D2D00B91217 /* Sources */,
+				1EBDABB10FB09D2D00B91217 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1E9F91CB0FB1D33D00F8AC18 /* PBXTargetDependency */,
+			);
+			name = MagicSquareExample;
+			productName = MagicSquareExample;
+			productReference = 1EBDABB30FB09D2D00B91217 /* MagicSquareExample */;
+			productType = "com.apple.product-type.tool";
+		};
+		D2AAC045055464E500DB518D /* ublasJama */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "ublasJama" */;
+			buildPhases = (
+				D2AAC043055464E500DB518D /* Headers */,
+				D2AAC044055464E500DB518D /* Sources */,
+				D289987405E68DCB004EDB86 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ublasJama;
+			productName = ublasJama;
+			productReference = D2AAC046055464E500DB518D /* libublasJama.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "ublasJama" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* ublasJama */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC045055464E500DB518D /* ublasJama */,
+				1EBDABAB0FB09D1C00B91217 /* TestMatrix */,
+				1EBDABB20FB09D2D00B91217 /* MagicSquareExample */,
+				1E9F92DA0FB1F82300F8AC18 /* all */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1EBDABA90FB09D1C00B91217 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EBDABBE0FB09D4C00B91217 /* TestMatrix.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1EBDABB00FB09D2D00B91217 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EBDABBB0FB09D4200B91217 /* MagicSquareExample.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2AAC044055464E500DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EBDAB9E0FB09C8B00B91217 /* CholeskyDecomposition.cpp in Sources */,
+				1EBDABA00FB09C8B00B91217 /* EigenvalueDecomposition.cpp in Sources */,
+				1EBDABA20FB09C8B00B91217 /* LUDecomposition.cpp in Sources */,
+				1EBDABA40FB09C8B00B91217 /* QRDecomposition.cpp in Sources */,
+				1EBDABA60FB09C8B00B91217 /* SingularValueDecomposition.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1E9F91CB0FB1D33D00F8AC18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2AAC045055464E500DB518D /* ublasJama */;
+			targetProxy = 1E9F91CA0FB1D33D00F8AC18 /* PBXContainerItemProxy */;
+		};
+		1E9F91CD0FB1D34400F8AC18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2AAC045055464E500DB518D /* ublasJama */;
+			targetProxy = 1E9F91CC0FB1D34400F8AC18 /* PBXContainerItemProxy */;
+		};
+		1E9F92DE0FB1F82800F8AC18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2AAC045055464E500DB518D /* ublasJama */;
+			targetProxy = 1E9F92DD0FB1F82800F8AC18 /* PBXContainerItemProxy */;
+		};
+		1E9F92E00FB1F82C00F8AC18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1EBDABAB0FB09D1C00B91217 /* TestMatrix */;
+			targetProxy = 1E9F92DF0FB1F82C00F8AC18 /* PBXContainerItemProxy */;
+		};
+		1E9F92E20FB1F82F00F8AC18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1EBDABB20FB09D2D00B91217 /* MagicSquareExample */;
+			targetProxy = 1E9F92E10FB1F82F00F8AC18 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91EC08733DB70010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = ublasJama;
+			};
+			name = Debug;
+		};
+		1DEB91ED08733DB70010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = ublasJama;
+			};
+			name = Release;
+		};
+		1DEB91F008733DB70010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_FAST_MATH = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "$(BOOST_PATH)";
+				PREBINDING = NO;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Debug;
+		};
+		1DEB91F108733DB70010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_FAST_MATH = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				HEADER_SEARCH_PATHS = "$(BOOST_PATH)";
+				PREBINDING = NO;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Release;
+		};
+		1E9F92DB0FB1F82400F8AC18 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = all;
+			};
+			name = Debug;
+		};
+		1E9F92DC0FB1F82400F8AC18 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = all;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		1EBDABAE0FB09D1D00B91217 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				PREBINDING = NO;
+				PRODUCT_NAME = TestMatrix;
+			};
+			name = Debug;
+		};
+		1EBDABAF0FB09D1D00B91217 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				PREBINDING = NO;
+				PRODUCT_NAME = TestMatrix;
+			};
+			name = Release;
+		};
+		1EBDABB50FB09D2D00B91217 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				PREBINDING = NO;
+				PRODUCT_NAME = MagicSquareExample;
+			};
+			name = Debug;
+		};
+		1EBDABB60FB09D2D00B91217 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				PREBINDING = NO;
+				PRODUCT_NAME = MagicSquareExample;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "ublasJama" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91EC08733DB70010E9CD /* Debug */,
+				1DEB91ED08733DB70010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "ublasJama" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91F008733DB70010E9CD /* Debug */,
+				1DEB91F108733DB70010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1E9F92F60FB1F85000F8AC18 /* Build configuration list for PBXAggregateTarget "all" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E9F92DB0FB1F82400F8AC18 /* Debug */,
+				1E9F92DC0FB1F82400F8AC18 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1EBDABB70FB09D2F00B91217 /* Build configuration list for PBXNativeTarget "TestMatrix" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1EBDABAE0FB09D1D00B91217 /* Debug */,
+				1EBDABAF0FB09D1D00B91217 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1EBDABB80FB09D2F00B91217 /* Build configuration list for PBXNativeTarget "MagicSquareExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1EBDABB50FB09D2D00B91217 /* Debug */,
+				1EBDABB60FB09D2D00B91217 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}
