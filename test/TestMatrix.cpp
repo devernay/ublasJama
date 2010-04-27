@@ -47,7 +47,7 @@ typedef vector<int> PivotVector;
 /** Check magnitude of difference of scalars. **/
 
 static void check(double x, double y) {
-    double eps = std::pow(2.0,-52.0);
+    double eps = std::pow(2.0,-52);
     if (x == 0 && std::abs(y) < 10*eps) return;
     if (y == 0 && std::abs(x) < 10*eps) return;
     if (std::abs(x-y) > 10*eps*std::max(std::abs(x),std::abs(y))) {
@@ -71,7 +71,7 @@ static void check(const Vector& x, const Vector& y) {
 /** Check norm of difference of Matrices. **/
 
 static void check(const Matrix& X, const Matrix& Y) {
-    double eps = std::pow(2.0,-52.0);
+    double eps = std::pow(2.0,-52);
     if (norm_1(X) == 0. && norm_1(Y) < 10*eps) return;
     if (norm_1(Y) == 0. && norm_1(X) < 10*eps) return;
     if (norm_1(X-Y) > 1000*eps*std::max(norm_1(X),norm_1(Y))) {
@@ -107,7 +107,7 @@ static int try_warning (int count, string s,string e) {
 
 /** Print a row vector. **/
 
-#if 1
+#if 0
 static void print(Vector x, int w, int d) {
     // Use format Fw.d for all elements.
     cout << "\n";
@@ -191,12 +191,14 @@ int main (int argc, char **argv) {
       }
       SingularValueDecomposition SVDID(IdentityMatrix(3,3));
       try {
-          cout << "U=";
-          print(SVDID.getU(),6,2);
-          cout << "S=";
-          print(SVDID.getS(),6,2);
-          cout << "V=";
-          print(SVDID.getV(),6,2);
+          /*
+            cout << "U=";
+            print(SVDID.getU(),6,2);
+            cout << "S=";
+            print(SVDID.getS(),6,2);
+            cout << "V=";
+            print(SVDID.getV(),6,2);
+          */
           Matrix US = prod(SVDID.getU(),SVDID.getS());
          check(IdentityMatrix(3,3),prod(US,trans(SVDID.getV())));
          try_success("SingularValueDecomposition(Identity33)...","");
