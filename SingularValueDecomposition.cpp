@@ -32,10 +32,9 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
       n = Arg.size2();
 
       /* Apparently the failing cases are only a proper subset of (m<n), 
-	 so let's not throw error.  Correct fix to come later?
-      if (m<n) {
-	  throw new IllegalArgumentException("Jama SVD only works for m >= n"); }
-      */
+	 so let's not throw error.  Correct fix to come later? */
+      BOOST_UBLAS_CHECK(m >= n, bad_size("Jama SVD only works for m >= n"));
+
       int nu = std::min(m,n);
       s = Vector(std::min(m+1,n));
       if (wantu)
@@ -167,8 +166,10 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
       // If required, generate U.
 
       if (wantu) {
-          U.clear();
          for (int j = nct; j < nu; j++) {
+            for (int i = 0; i < m; i++) {
+               U(i,j) = 0.0;
+            }
             U(j,j) = 1.0;
          }
          for (int k = nct-1; k >= 0; k--) {
