@@ -6,9 +6,7 @@ CXX = g++
 LD = g++
 LDFLAGS = -g -pthread 
 
-#CFLAGS_OPT=-Wall -g -O2 -ftree-vectorize -msse3 -mssse3 -ffast-math
-# The following makes SVD test fail (with gcc 4.0 or 4.2):
-CFLAGS_OPT=-Wall -g -O -ffast-math
+CFLAGS_OPT=-Wall -g -O3 -ftree-vectorize -msse3 -mssse3 -ffast-math
 
 # Create dependencies
 MAKEDEPEND = gcc -M $(CPPFLAGS) -o $*.d $<
