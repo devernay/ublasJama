@@ -107,7 +107,7 @@ static int try_warning (int count, string s,string e) {
 
 /** Print a row vector. **/
 
-#if 0
+#if 1
 static void print(Vector x, int w, int d) {
     // Use format Fw.d for all elements.
     cout << "\n";
@@ -115,6 +115,17 @@ static void print(Vector x, int w, int d) {
         cout << setw(w) << fixed << setprecision(d) << x(i);
     }
     cout << "\n";
+}
+
+/** Print a matrix. **/
+
+static void print(Matrix m, int w, int d) {
+    // Use format Fw.d for all elements.
+    cout << "[\n";
+    for(unsigned i=0; i<m.size1(); i++) {
+        print(matrix_row<Matrix>(m,i),w,d);
+    }
+    cout << "]\n";
 }
 #endif
 
@@ -178,13 +189,27 @@ int main (int argc, char **argv) {
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"SingularValueDecomposition...","incorrect singular value decomposition calculation");
       }
+      SingularValueDecomposition SVDID(IdentityMatrix(3,3));
+      try {
+          cout << "U=";
+          print(SVDID.getU(),6,2);
+          cout << "S=";
+          print(SVDID.getS(),6,2);
+          cout << "V=";
+          print(SVDID.getV(),6,2);
+          Matrix US = prod(SVDID.getU(),SVDID.getS());
+         check(IdentityMatrix(3,3),prod(US,trans(SVDID.getV())));
+         try_success("SingularValueDecomposition(Identity33)...","");
+      } catch ( std::exception e ) {
+         errorCount = try_failure(errorCount,"SingularValueDecomposition(Identity33)...","incorrect singular value decomposition calculation");
+      }
       DEF = Matrix(3,4);
       for(unsigned i=0; i<DEF.size1(); i++) {
          for(unsigned j=0; j<DEF.size2(); j++) {
             DEF(i,j) = rankdef[i][j];
          }
       }
-      SVD = SingularValueDecomposition(DEF); 
+      SVD = SingularValueDecomposition(trans(DEF)); // SVD only works for m >= n 
       try {
          check(SVD.rank(),std::min(DEF.size1(),DEF.size2())-1);
          try_success("rank()...","");
