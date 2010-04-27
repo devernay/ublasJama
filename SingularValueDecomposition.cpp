@@ -37,10 +37,14 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
 
       int nu = std::min(m,n);
       s = Vector(std::min(m+1,n));
-      if (wantu)
+      if (wantu) {
           U = Matrix(m,nu);
-      if (wantv)
+          U.clear();
+      }
+      if (wantv) {
           V = Matrix(n,n);
+          V.clear();
+      }
       Vector e(n);
       Vector work(m);
 
