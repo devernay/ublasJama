@@ -181,13 +181,35 @@ int main (int argc, char **argv) {
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"QRDecomposition...","incorrect QR decomposition calculation");
       }
-      SingularValueDecomposition SVD(A);
+      SingularValueDecomposition SVD(A,false,true,true); // non-lazy SVD
       try {
          Matrix US = prod(SVD.getU(),SVD.getS());
          check(A,prod(US,trans(SVD.getV())));
          try_success("SingularValueDecomposition...","");
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"SingularValueDecomposition...","incorrect singular value decomposition calculation");
+      }
+      try {
+         Matrix UtU = prod(trans(SVD.getU()),SVD.getU()); // U is 4x4 because of non-lazy SVD
+         check(UtU,IdentityMatrix(4,4));
+         try_success("SingularValueDecomposition(U)...","");
+      } catch ( std::exception e ) {
+         errorCount = try_failure(errorCount,"SingularValueDecomposition(U)...","U is not orthonormal");
+      }
+      try {
+         Matrix VtV = prod(trans(SVD.getV()),SVD.getV());
+         check(VtV,IdentityMatrix(3,3));
+         try_success("SingularValueDecomposition(V)...","");
+      } catch ( std::exception e ) {
+         errorCount = try_failure(errorCount,"SingularValueDecomposition(V)...","V is not orthonormal");
+      }
+      SingularValueDecomposition SVDl(A); // lazy SVD
+      try {
+         Matrix US = prod(SVDl.getU(),SVDl.getS());
+         check(A,prod(US,trans(SVDl.getV())));
+         try_success("SingularValueDecomposition(lazy)...","");
+      } catch ( std::exception e ) {
+         errorCount = try_failure(errorCount,"SingularValueDecomposition(lazy)...","incorrect singular value decomposition calculation");
       }
       SingularValueDecomposition SVDID(IdentityMatrix(3,3));
       try {
