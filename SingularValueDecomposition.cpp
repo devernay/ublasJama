@@ -1,3 +1,7 @@
+// This version includes modifications and fixes by Andreas Kyrmegalos
+// explanation: http://cio.nist.gov/esd/emaildir/lists/jama/msg01430.html
+// final version: http://cio.nist.gov/esd/emaildir/lists/jama/msg01431.html
+
 #include <cmath>
 #include <boost/math/special_functions/hypot.hpp>
 #include "SingularValueDecomposition.hpp"
@@ -23,22 +27,19 @@ namespace boost {
    }
    */
 
-SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool wantu, bool wantv) {
+void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu, bool wantv) {
 
       // Derived from LINPACK code.
       // Initialize.
       Matrix A = Arg;
       m = Arg.size1();
       n = Arg.size2();
+      this->thin = thin;
 
-      /* Apparently the failing cases are only a proper subset of (m<n), 
-	 so let's not throw error.  Correct fix to come later? */
-      BOOST_UBLAS_CHECK(m >= n, bad_size("Jama SVD only works for m >= n"));
-
-      int nu = std::min(m,n);
+      ncu = thin?std::min(m,n):m;
       s = Vector(std::min(m+1,n));
       if (wantu) {
-          U = Matrix(m,nu);
+          U = Matrix(m,ncu);
           U.clear();
       }
       if (wantv) {
@@ -53,7 +54,8 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
 
       int nct = std::min(m-1,n);
       int nrt = std::max(0,std::min(n-2,m));
-      for (int k = 0; k < std::max(nct,nrt); k++) {
+      int lu = std::max(nct,nrt);
+      for (int k = 0; k < lu; k++) {
          if (k < nct) {
 
             // Compute the transformation for the k-th column and
@@ -170,7 +172,7 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
       // If required, generate U.
 
       if (wantu) {
-         for (int j = nct; j < nu; j++) {
+         for (int j = nct; j < ncu; j++) {
             for (int i = 0; i < m; i++) {
                U(i,j) = 0.0;
             }
@@ -178,7 +180,7 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
          }
          for (int k = nct-1; k >= 0; k--) {
             if (s(k) != 0.0) {
-               for (int j = k+1; j < nu; j++) {
+               for (int j = k+1; j < ncu; j++) {
                   double t = 0;
                   for (int i = k; i < m; i++) {
                      t += U(i,k)*U(i,j);
@@ -209,7 +211,7 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
       if (wantv) {
          for (int k = n-1; k >= 0; k--) {
             if ((k < nrt) && (e(k) != 0.0)) {
-               for (int j = k+1; j < nu; j++) {
+               for (int j = k+1; j < n; j++) {
                   double t = 0;
                   for (int i = k+1; i < n; i++) {
                       t += V(i,k)*V(i,j);
@@ -400,7 +402,7 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
                   }
                }
                e(p-2) = f;
-               iter = iter + 1;
+               iter++;
             }
             break;
 
@@ -413,7 +415,7 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
                if (s(k) <= 0.0) {
                   s(k) = (s(k) < 0.0 ? -s(k) : 0.0);
                   if (wantv) {
-                     for (int i = 0; i <= pp; i++) {
+                     for (int i = 0; i < n; i++) {
                         V(i,k) = -V(i,k);
                      }
                   }
@@ -453,8 +455,7 @@ SingularValueDecomposition::SingularValueDecomposition (const Matrix &Arg, bool 
    */
 
 int SingularValueDecomposition::rank () const {
-      double eps = std::pow(2.0,-52.0);
-      double tol = std::max(m,n)*s[0]*eps;
+      double tol = std::max(m,n)*s[0]*std::pow(2.0,-52);
       int r = 0;
       for (int i = 0; i < (int)s.size(); i++) {
          if (s(i) > tol) {

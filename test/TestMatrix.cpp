@@ -211,7 +211,7 @@ int main (int argc, char **argv) {
             DEF(i,j) = rankdef[i][j];
          }
       }
-      SVD = SingularValueDecomposition(trans(DEF)); // SVD only works for m >= n 
+      SVD = SingularValueDecomposition(DEF);
       try {
          check(SVD.rank(),std::min(DEF.size1(),DEF.size2())-1);
          try_success("rank()...","");
