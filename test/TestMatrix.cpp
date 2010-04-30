@@ -22,6 +22,8 @@ The stopping point should give an indication of where the problem exists.
 #include <iostream>
 #include <iomanip>
 #include <boost/numeric/ublas/io.hpp>
+#include <boost/random/normal_distribution.hpp>
+#include <boost/random/lagged_fibonacci.hpp>
 #include "QRDecomposition.hpp"
 #include "LUDecomposition.hpp"
 #include "SingularValueDecomposition.hpp"
@@ -191,14 +193,14 @@ int main (int argc, char **argv) {
       }
       try {
          Matrix UtU = prod(trans(SVD.getU()),SVD.getU()); // U is 4x4 because of non-lazy SVD
-         check(UtU,IdentityMatrix(4,4));
+         check(UtU,IdentityMatrix(A.size1(),A.size1()));
          try_success("SingularValueDecomposition(U)...","");
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"SingularValueDecomposition(U)...","U is not orthonormal");
       }
       try {
          Matrix VtV = prod(trans(SVD.getV()),SVD.getV());
-         check(VtV,IdentityMatrix(3,3));
+         check(VtV,IdentityMatrix(A.size2(),A.size2()));
          try_success("SingularValueDecomposition(V)...","");
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"SingularValueDecomposition(V)...","V is not orthonormal");
@@ -227,6 +229,32 @@ int main (int argc, char **argv) {
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"SingularValueDecomposition(Identity33)...","incorrect singular value decomposition calculation");
       }
+      try {
+           const double mean = 0.0;
+           const double sigma = 1.0;
+           boost::normal_distribution<double> norm_dist(mean, sigma);
+           boost::lagged_fibonacci19937 engine;
+           for(unsigned k=20; k<=40; k++) { // 21 tries should be OK
+              Matrix AR(k,30);
+              for(unsigned i=0; i<AR.size1(); i++) {
+                  for(unsigned j=0; j<AR.size2(); j++) {
+                      const double value = norm_dist.operator () <boost::lagged_fibonacci19937>((engine));
+                      AR(i,j) = value;
+                  }
+              }
+              SingularValueDecomposition SVD(AR,false,true,true); // non-lazy SVD
+              Matrix US = prod(SVD.getU(),SVD.getS());
+              check(AR,prod(US,trans(SVD.getV())));
+              Matrix UtU = prod(trans(SVD.getU()),SVD.getU()); // U is 4x4 because of non-lazy SVD
+              check(UtU,IdentityMatrix(AR.size1(),AR.size1()));
+              Matrix VtV = prod(trans(SVD.getV()),SVD.getV());
+              check(VtV,IdentityMatrix(AR.size2(),AR.size2()));
+          }
+          try_success("SingularValueDecomposition(random)...","");
+      } catch ( std::exception e ) {
+         errorCount = try_failure(errorCount,"SingularValueDecomposition(random)...","incorrect singular value decomposition calculation");
+      }
+
       DEF = Matrix(3,4);
       for(unsigned i=0; i<DEF.size1(); i++) {
          for(unsigned j=0; j<DEF.size2(); j++) {
