@@ -62,14 +62,14 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // place the k-th diagonal in s[k].
             // Compute 2-norm of k-th column without under/overflow.
             s(k) = 0;
-            for (int i = k; i < m; i++) {
+            for (int i = k; i < m; i++) { // s(k) = norm of elements k..m-1 of column k of A
                 s(k) = boost::math::hypot(s(k),A(i,k));
             }
             if (s(k) != 0.0) {
                if (A(k,k) < 0.0) {
                   s(k) = -s(k);
                }
-               for (int i = k; i < m; i++) {
+               for (int i = k; i < m; i++) { // divide elements k..m-1 of column k of A by s(k)
                   A(i,k) /= s(k);
                }
                A(k,k) += 1.0;
@@ -82,11 +82,11 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // Apply the transformation.
 
                double t = 0;
-               for (int i = k; i < m; i++) {
+               for (int i = k; i < m; i++) { // t = dot-product of elements k..m-1 of columns k and j of A
                   t += A(i,k)*A(i,j);
                }
                t = -t/A(k,k);
-               for (int i = k; i < m; i++) {
+               for (int i = k; i < m; i++) { // elements k..m-1 of column j of A +=  t*(elements k..m-1 of column k of A)
                   A(i,j) += t*A(i,k);
                }
             }
@@ -101,7 +101,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // Place the transformation in U for subsequent back
             // multiplication.
 
-            for (int i = k; i < m; i++) {
+            for (int i = k; i < m; i++) { // elements k..m-1 of column k of U = elements k..m-1 of column k of A
                U(i,k) = A(i,k);
             }
          }
@@ -111,14 +111,14 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // k-th super-diagonal in e[k].
             // Compute 2-norm without under/overflow.
             e(k) = 0;
-            for (int i = k+1; i < n; i++) {
+            for (int i = k+1; i < n; i++) { // e(k) = norm of elements k+1..n-1 of e
                 e(k) = boost::math::hypot(e[k],e[i]);
             }
             if (e(k) != 0.0) {
                if (e(k+1) < 0.0) {
                   e(k) = -e(k);
                }
-               for (int i = k+1; i < n; i++) {
+               for (int i = k+1; i < n; i++) { // divide elements k+1..n-1 of e by e(k)
                   e(i) /= e(k);
                }
                e(k+1) += 1.0;
@@ -131,14 +131,14 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                for (int i = k+1; i < m; i++) {
                   work(i) = 0.0;
                }
-               for (int j = k+1; j < n; j++) {
+               for (int j = k+1; j < n; j++) { // elements k+1..n-1 of work = A.submatrix(k+1..n-1,k+1..m-1)*elements k+1..n-1 of e
                   for (int i = k+1; i < m; i++) {
                      work(i) += e(j)*A(i,j);
                   }
                }
                for (int j = k+1; j < n; j++) {
                   double t = -e(j)/e(k+1);
-                  for (int i = k+1; i < m; i++) {
+                  for (int i = k+1; i < m; i++) { // elements k+1..m-1 of column j of A += t*elements k+1..m-1 of work
                      A(i,j) += t*work(i);
                   }
                }
@@ -148,7 +148,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // Place the transformation in V for subsequent
             // back multiplication.
 
-               for (int i = k+1; i < n; i++) {
+               for (int i = k+1; i < n; i++) { // elements k+1..n-1 of column k of V = elements k+1..n-1 of e
                   V(i,k) = e(i);
                }
             }
@@ -173,7 +173,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
 
       if (wantu) {
          for (int j = nct; j < ncu; j++) {
-            for (int i = 0; i < m; i++) {
+            for (int i = 0; i < m; i++) { // set column j of U to zero
                U(i,j) = 0.0;
             }
             U(j,j) = 1.0;
@@ -182,23 +182,25 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             if (s(k) != 0.0) {
                for (int j = k+1; j < ncu; j++) {
                   double t = 0;
-                  for (int i = k; i < m; i++) {
+                  for (int i = k; i < m; i++) { // t = dot-product of elements k..m-1 of columns k and j of U
                      t += U(i,k)*U(i,j);
                   }
                   t = -t/U(k,k);
-                  for (int i = k; i < m; i++) {
+                  for (int i = k; i < m; i++) { // elements k..m-1 of column j of U +=  t*(elements k..m-1 of column k of U)
                      U(i,j) += t*U(i,k);
                   }
                }
-               for (int i = k; i < m; i++ ) {
+               for (int i = k; i < m; i++ ) { // elements k..m-1 of column k of U *= -1.
                   U(i,k) = -U(i,k);
                }
                U(k,k) += 1.0;
-               for (int i = 0; i < k-1; i++) {
-                  U(i,k) = 0.0;
+               if(k-1 > 0) {
+                  for (int i = 0; i < k-1; i++) { // set elements 0..k-2 of column k of U to zero.
+                     U(i,k) = 0.0;
+                  }
                }
             } else {
-               for (int i = 0; i < m; i++) {
+               for (int i = 0; i < m; i++) { // set column k of U to zero
                   U(i,k) = 0.0;
                }
                U(k,k) = 1.0;
@@ -213,16 +215,16 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             if ((k < nrt) && (e(k) != 0.0)) {
                for (int j = k+1; j < n; j++) {
                   double t = 0;
-                  for (int i = k+1; i < n; i++) {
+                  for (int i = k+1; i < n; i++) { // t = dot-product of elements k+1..n-1 of columns k and j of V
                       t += V(i,k)*V(i,j);
                   }
                   t = -t/V(k+1,k);
-                  for (int i = k+1; i < n; i++) {
+                  for (int i = k+1; i < n; i++) { // elements k+1..n-1 of column j of V +=  t*(elements k+1..n-1 of column k of V)
                      V(i,j) += t*V(i,k);
                   }
                }
             }
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < n; i++) { // set column k of V to zero
                V(i,k) = 0.0;
             }
             V(k,k) = 1.0;
@@ -296,7 +298,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                double f = e(p-2);
                e[p-2] = 0.0;
                for (int j = p-2; j >= k; j--) {
-                   double t = boost::math::hypot(s(j),f);
+                  double t = boost::math::hypot(s(j),f);
                   double cs = s(j)/t;
                   double sn = f/t;
                   s(j) = t;
@@ -321,7 +323,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                double f = e(k-1);
                e[k-1] = 0.0;
                for (int j = k; j < p; j++) {
-                   double t = boost::math::hypot(s(j),f);
+                  double t = boost::math::hypot(s(j),f);
                   double cs = s(j)/t;
                   double sn = f/t;
                   s(j) = t;
@@ -368,7 +370,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                // Chase zeros.
    
                for (int j = k; j < p-1; j++) {
-                   double t = boost::math::hypot(f,g);
+                  double t = boost::math::hypot(f,g);
                   double cs = f/t;
                   double sn = g/t;
                   if (j != k) {
@@ -385,7 +387,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                         V(i,j) = t;
                      }
                   }
-                   t = boost::math::hypot(f,g);
+                  t = boost::math::hypot(f,g);
                   cs = f/t;
                   sn = g/t;
                   s(j) = t;
@@ -409,13 +411,12 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // Convergence.
 
             case 4: {
-
                // Make the singular values positive.
    
                if (s(k) <= 0.0) {
                   s(k) = (s(k) < 0.0 ? -s(k) : 0.0);
                   if (wantv) {
-                     for (int i = 0; i < n; i++) {
+                     for (int i = 0; i < n; i++) { // multiply column k of V by -1
                         V(i,k) = -V(i,k);
                      }
                   }
@@ -431,12 +432,12 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                   s(k) = s(k+1);
                   s(k+1) = t;
                   if (wantv && (k < n-1)) {
-                     for (int i = 0; i < n; i++) {
+                     for (int i = 0; i < n; i++) { // swap columns k and k+1 of V
                         t = V(i,k+1); V(i,k+1) = V(i,k); V(i,k) = t;
                      }
                   }
                   if (wantu && (k < m-1)) {
-                     for (int i = 0; i < m; i++) {
+                     for (int i = 0; i < m; i++) { // swap columns k and k+1 of U
                         t = U(i,k+1); U(i,k+1) = U(i,k); U(i,k) = t;
                      }
                   }
@@ -457,7 +458,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
 int SingularValueDecomposition::rank () const {
       double tol = std::max(m,n)*s[0]*std::pow(2.0,-52);
       int r = 0;
-      for (int i = 0; i < (int)s.size(); i++) {
+      for (unsigned i = 0; i < s.size(); i++) {
          if (s(i) > tol) {
             r++;
          }
