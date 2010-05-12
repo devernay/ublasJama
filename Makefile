@@ -41,8 +41,7 @@ ublasJama_SOURCES_CPP = \
 	CholeskyDecomposition.cpp \
 	EigenvalueDecomposition.cpp \
 	LUDecomposition.cpp \
-	QRDecomposition.cpp \
-	SingularValueDecomposition.cpp
+	QRDecomposition.cpp
 
 TestMatrix_SOURCES_CPP = \
 	test/TestMatrix.cpp

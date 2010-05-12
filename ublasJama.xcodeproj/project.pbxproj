@@ -32,7 +32,6 @@
 		1EBDABA30FB09C8B00B91217 /* LUDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB990FB09C8B00B91217 /* LUDecomposition.hpp */; };
 		1EBDABA40FB09C8B00B91217 /* QRDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB9A0FB09C8B00B91217 /* QRDecomposition.cpp */; };
 		1EBDABA50FB09C8B00B91217 /* QRDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB9B0FB09C8B00B91217 /* QRDecomposition.hpp */; };
-		1EBDABA60FB09C8B00B91217 /* SingularValueDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB9C0FB09C8B00B91217 /* SingularValueDecomposition.cpp */; };
 		1EBDABA70FB09C8B00B91217 /* SingularValueDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB9D0FB09C8B00B91217 /* SingularValueDecomposition.hpp */; };
 		1EBDABBB0FB09D4200B91217 /* MagicSquareExample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDABBA0FB09D4200B91217 /* MagicSquareExample.cpp */; };
 		1EBDABBE0FB09D4C00B91217 /* TestMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDABBD0FB09D4C00B91217 /* TestMatrix.cpp */; };
@@ -86,7 +85,6 @@
 		1EBDAB990FB09C8B00B91217 /* LUDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LUDecomposition.hpp; sourceTree = "<group>"; };
 		1EBDAB9A0FB09C8B00B91217 /* QRDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QRDecomposition.cpp; sourceTree = "<group>"; };
 		1EBDAB9B0FB09C8B00B91217 /* QRDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = QRDecomposition.hpp; sourceTree = "<group>"; };
-		1EBDAB9C0FB09C8B00B91217 /* SingularValueDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SingularValueDecomposition.cpp; sourceTree = "<group>"; };
 		1EBDAB9D0FB09C8B00B91217 /* SingularValueDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SingularValueDecomposition.hpp; sourceTree = "<group>"; };
 		1EBDABAC0FB09D1C00B91217 /* TestMatrix */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TestMatrix; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EBDABB30FB09D2D00B91217 /* MagicSquareExample */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MagicSquareExample; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,7 +143,6 @@
 				1EBDAB990FB09C8B00B91217 /* LUDecomposition.hpp */,
 				1EBDAB9A0FB09C8B00B91217 /* QRDecomposition.cpp */,
 				1EBDAB9B0FB09C8B00B91217 /* QRDecomposition.hpp */,
-				1EBDAB9C0FB09C8B00B91217 /* SingularValueDecomposition.cpp */,
 				1EBDAB9D0FB09C8B00B91217 /* SingularValueDecomposition.hpp */,
 			);
 			name = Source;
@@ -298,7 +295,6 @@
 				1EBDABA00FB09C8B00B91217 /* EigenvalueDecomposition.cpp in Sources */,
 				1EBDABA20FB09C8B00B91217 /* LUDecomposition.cpp in Sources */,
 				1EBDABA40FB09C8B00B91217 /* QRDecomposition.cpp in Sources */,
-				1EBDABA60FB09C8B00B91217 /* SingularValueDecomposition.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
