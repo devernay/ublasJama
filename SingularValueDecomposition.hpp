@@ -70,6 +70,13 @@ class SingularValueDecomposition {
    */
    void init (const Matrix &Arg, bool thin, bool wantu, bool wantv);
 
+   static matrix_vector_slice<Matrix> subcolumn(Matrix& M,size_t c,size_t start,size_t stop) {
+      return matrix_vector_slice<Matrix> (M, slice(start,1,stop-start), slice(c,0,stop-start));
+   }
+   static matrix_vector_slice<Matrix> subrow(Matrix& M,size_t r,size_t start,size_t stop) {
+      return matrix_vector_slice<Matrix> (M, slice(r,0,stop-start), slice(start,1,stop-start));
+   }
+
 public:
 /* ------------------------
    Old Constructor

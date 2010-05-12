@@ -8,11 +8,6 @@
 #include <boost/numeric/ublas/vector_proxy.hpp>
 #include "SingularValueDecomposition.hpp"
 
-//#define subcolumn(M,c,start,stop) subrange(column(M,c),start,stop)
-//#define subrow(M,r,start,stop) subrange(row(M,r),start,stop)
-#define subcolumn(M,c,start,stop) matrix_vector_slice<Matrix> ((M), slice((start),1,(stop)-(start)), slice((c),0,(stop)-(start)))
-#define subrow(M,r,start,stop) matrix_vector_slice<Matrix> ((M), slice((r),0,(stop)-(start)), slice((start),1,(stop)-(start)))
-
 namespace boost {
     namespace numeric {
         namespace ublas {
