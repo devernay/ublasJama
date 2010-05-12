@@ -20,8 +20,10 @@
 #define _BOOST_UBLAS_SINGULARVALUEDECOMPOSITION_
 
 #include <algorithm>
+#include <limits>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/numeric/ublas/exception.hpp>
 
 namespace boost { namespace numeric { namespace ublas {
@@ -39,7 +41,7 @@ class SingularValueDecomposition {
    @serial internal storage of U.
    @serial internal storage of V.
    */
-    Matrix U, V;
+   Matrix U, V;
 
    /** Array for internal storage of singular values.
    @serial internal storage of singular values.
@@ -51,7 +53,7 @@ class SingularValueDecomposition {
    @serial column dimension.
    @serial U column dimension.
    */
-    int m, n, ncu;
+   int m, n, ncu;
 
    /** Column specification of matrix U
    @serial U column dimension toggle
@@ -130,8 +132,7 @@ public:
    */
 
    Matrix getS () const {
-      Matrix S(m>=n?(thin?n:ncu):ncu,n);
-      S.clear();
+      Matrix S(m>=n?(thin?n:ncu):ncu,n,0.0);
       for (int i = std::min(m,n)-1; i >= 0; i--) {
          S(i,i) = s(i);
       }
@@ -143,25 +144,34 @@ public:
    */
    
    Matrix getreciprocalS () const {
-      Matrix S(n,m>=n?(thin?n:ncu):ncu);
-      S.clear();
+      Matrix S(n,m>=n?(thin?n:ncu):ncu,0.0);
       for (int i = std::min(m,n)-1; i>=0; i--)
          S(i,i) = s(i)==0.0?0.0:1.0/s(i);
       return S;
    }
    
+   /** Return the rightmost column of V.
+       Does not check to see whether or not the matrix actually was rank-deficient -
+       the caller is assumed to have examined S and decided that to his or her satisfaction.
+   @return     null vector
+   */
+
+   matrix_column<const Matrix> getNullVector () const {
+       return matrix_column<const Matrix>(V, n-1);
+   }
+
    /** Return the Moore-Penrose (generalized) inverse
     *  Slightly modified version of Kim van der Linde's code
    @param omit if true tolerance based omitting of negligible singular values
    @return     A+
    */
    
-   Matrix inverse(bool omit) const {
+   Matrix inverse(bool omit = true) const {
       Matrix inverse(n,m);
       if(rank()> 0) {
          Vector reciprocalS(s.size());
          if (omit) {
-            double tol = std::max(m,n)*s(0)*std::pow(2.0,-52);
+            double tol = std::max(m,n)*s(0)*std::numeric_limits<double>::epsilon();
             for (int i = s.size()-1;i>=0;i--)
                reciprocalS(i) = std::abs(s(i))<tol?0.0:1.0/s(i);
          }
@@ -197,7 +207,7 @@ public:
    @return     Number of nonnegligible singular values.
    */
 
-    int rank () const;    
+    unsigned int rank () const;    
 };
 
 }}}

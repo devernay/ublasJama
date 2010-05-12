@@ -3,8 +3,15 @@
 // final version: http://cio.nist.gov/esd/emaildir/lists/jama/msg01431.html
 
 #include <cmath>
+#include <limits>
 #include <boost/math/special_functions/hypot.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
 #include "SingularValueDecomposition.hpp"
+
+//#define subcolumn(M,c,start,stop) subrange(column(M,c),start,stop)
+//#define subrow(M,r,start,stop) subrange(row(M,r),start,stop)
+#define subcolumn(M,c,start,stop) matrix_vector_slice<Matrix> ((M), slice((start),1,(stop)-(start)), slice((c),0,(stop)-(start)))
+#define subrow(M,r,start,stop) matrix_vector_slice<Matrix> ((M), slice((r),0,(stop)-(start)), slice((start),1,(stop)-(start)))
 
 namespace boost {
     namespace numeric {
@@ -39,12 +46,10 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
       ncu = thin?std::min(m,n):m;
       s = Vector(std::min(m+1,n));
       if (wantu) {
-          U = Matrix(m,ncu);
-          U.clear();
+          U = Matrix(m,ncu,0.0);
       }
       if (wantv) {
-          V = Matrix(n,n);
-          V.clear();
+          V = Matrix(n,n,0.0);
       }
       Vector e(n);
       Vector work(m);
@@ -61,17 +66,14 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // Compute the transformation for the k-th column and
             // place the k-th diagonal in s[k].
             // Compute 2-norm of k-th column without under/overflow.
-            s(k) = 0;
-            for (int i = k; i < m; i++) { // s(k) = norm of elements k..m-1 of column k of A
-                s(k) = boost::math::hypot(s(k),A(i,k));
-            }
+            // s(k) = norm of elements k..m-1 of column k of A
+            s(k) = norm_2(subcolumn(A,k,k,m));
             if (s(k) != 0.0) {
                if (A(k,k) < 0.0) {
                   s(k) = -s(k);
                }
-               for (int i = k; i < m; i++) { // divide elements k..m-1 of column k of A by s(k)
-                  A(i,k) /= s(k);
-               }
+               // divide elements k..m-1 of column k of A by s(k)
+               subcolumn(A,k,k,m) /= s(k);
                A(k,k) += 1.0;
             }
             s(k) = -s(k);
@@ -81,14 +83,11 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
 
             // Apply the transformation.
 
-               double t = 0;
-               for (int i = k; i < m; i++) { // t = dot-product of elements k..m-1 of columns k and j of A
-                  t += A(i,k)*A(i,j);
-               }
+               // t = dot-product of elements k..m-1 of columns k and j of A
+               double t = inner_prod(subcolumn(A,k,k,m),subcolumn(A,j,k,m));
                t = -t/A(k,k);
-               for (int i = k; i < m; i++) { // elements k..m-1 of column j of A +=  t*(elements k..m-1 of column k of A)
-                  A(i,j) += t*A(i,k);
-               }
+               // elements k..m-1 of column j of A +=  t*(elements k..m-1 of column k of A)
+               subcolumn(A,j,k,m) += t*subcolumn(A,k,k,m);
             }
 
             // Place the k-th row of A into e for the
@@ -101,26 +100,22 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // Place the transformation in U for subsequent back
             // multiplication.
 
-            for (int i = k; i < m; i++) { // elements k..m-1 of column k of U = elements k..m-1 of column k of A
-               U(i,k) = A(i,k);
-            }
+            // elements k..m-1 of column k of U = elements k..m-1 of column k of A
+            subcolumn(U,k,k,m) = subcolumn(A,k,k,m);
          }
          if (k < nrt) {
 
             // Compute the k-th row transformation and place the
             // k-th super-diagonal in e[k].
             // Compute 2-norm without under/overflow.
-            e(k) = 0;
-            for (int i = k+1; i < n; i++) { // e(k) = norm of elements k+1..n-1 of e
-                e(k) = boost::math::hypot(e[k],e[i]);
-            }
+            // e(k) = norm of elements k+1..n-1 of e
+            e(k) = norm_2(subrange(e,k+1,n));
             if (e(k) != 0.0) {
                if (e(k+1) < 0.0) {
                   e(k) = -e(k);
                }
-               for (int i = k+1; i < n; i++) { // divide elements k+1..n-1 of e by e(k)
-                  e(i) /= e(k);
-               }
+               // divide elements k+1..n-1 of e by e(k)
+               subrange(e,k+1,n) /= e(k);
                e(k+1) += 1.0;
             }
             e(k) = -e(k);
@@ -131,16 +126,12 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                for (int i = k+1; i < m; i++) {
                   work(i) = 0.0;
                }
-               for (int j = k+1; j < n; j++) { // elements k+1..n-1 of work = A.submatrix(k+1..n-1,k+1..m-1)*elements k+1..n-1 of e
-                  for (int i = k+1; i < m; i++) {
-                     work(i) += e(j)*A(i,j);
-                  }
-               }
+               // elements k+1..m-1 of work = A.submatrix(k+1..m-1,k+1..n-1)*elements k+1..n-1 of e
+               noalias(subrange(work, k+1, m)) = prod(subrange(A,k+1,m,k+1,n),subrange(e,k+1,n));
                for (int j = k+1; j < n; j++) {
                   double t = -e(j)/e(k+1);
-                  for (int i = k+1; i < m; i++) { // elements k+1..m-1 of column j of A += t*elements k+1..m-1 of work
-                     A(i,j) += t*work(i);
-                  }
+                  // elements k+1..m-1 of column j of A += t*elements k+1..m-1 of work
+                  subcolumn(A,j,k+1,m) += t*subrange(work,k+1,m);
                }
             }
             if (wantv) {
@@ -148,9 +139,8 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // Place the transformation in V for subsequent
             // back multiplication.
 
-               for (int i = k+1; i < n; i++) { // elements k+1..n-1 of column k of V = elements k+1..n-1 of e
-                  V(i,k) = e(i);
-               }
+               // elements k+1..n-1 of column k of V = elements k+1..n-1 of e
+               subcolumn(V,k,k+1,n) = subrange(e,k+1,n);
             }
          }
       }
@@ -173,36 +163,31 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
 
       if (wantu) {
          for (int j = nct; j < ncu; j++) {
-            for (int i = 0; i < m; i++) { // set column j of U to zero
-               U(i,j) = 0.0;
-            }
+            // set column j of U to zero
+            std::fill(column(U,j).begin(),column(U,j).end(),double(/*zero*/));
             U(j,j) = 1.0;
          }
          for (int k = nct-1; k >= 0; k--) {
             if (s(k) != 0.0) {
                for (int j = k+1; j < ncu; j++) {
-                  double t = 0;
-                  for (int i = k; i < m; i++) { // t = dot-product of elements k..m-1 of columns k and j of U
-                     t += U(i,k)*U(i,j);
-                  }
-                  t = -t/U(k,k);
-                  for (int i = k; i < m; i++) { // elements k..m-1 of column j of U +=  t*(elements k..m-1 of column k of U)
-                     U(i,j) += t*U(i,k);
-                  }
+                  // t = dot-product of elements k..m-1 of columns k and j of U
+                  double t = inner_prod(subcolumn(U,k,k,m),subcolumn(U,j,k,m));
+                  t /= -U(k,k);
+                  // elements k..m-1 of column j of U +=  t*(elements k..m-1 of column k of U)
+                  subcolumn(U,j,k,m) += t*subcolumn(U,k,k,m);
                }
-               for (int i = k; i < m; i++ ) { // elements k..m-1 of column k of U *= -1.
-                  U(i,k) = -U(i,k);
-               }
+               // elements k..m-1 of column k of U *= -1.
+               subcolumn(U,k,k,m) *= -1.0;
                U(k,k) += 1.0;
                if(k-1 > 0) {
-                  for (int i = 0; i < k-1; i++) { // set elements 0..k-2 of column k of U to zero.
+                  // set elements 0..k-2 of column k of U to zero.
+                  for (int i = 0; i < k-1; i++) { 
                      U(i,k) = 0.0;
                   }
                }
             } else {
-               for (int i = 0; i < m; i++) { // set column k of U to zero
-                  U(i,k) = 0.0;
-               }
+               // set column k of U to zero
+               std::fill(column(U,k).begin(),column(U,k).end(),double(/*zero*/));
                U(k,k) = 1.0;
             }
          }
@@ -214,19 +199,15 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
          for (int k = n-1; k >= 0; k--) {
             if ((k < nrt) && (e(k) != 0.0)) {
                for (int j = k+1; j < n; j++) {
-                  double t = 0;
-                  for (int i = k+1; i < n; i++) { // t = dot-product of elements k+1..n-1 of columns k and j of V
-                      t += V(i,k)*V(i,j);
-                  }
-                  t = -t/V(k+1,k);
-                  for (int i = k+1; i < n; i++) { // elements k+1..n-1 of column j of V +=  t*(elements k+1..n-1 of column k of V)
-                     V(i,j) += t*V(i,k);
-                  }
+                  // t = dot-product of elements k+1..n-1 of columns k and j of V
+                  double t = inner_prod(subcolumn(V,k,k+1,n),subcolumn(V,j,k+1,n));
+                  t /= -V(k+1,k);
+                  // elements k+1..n-1 of column j of V +=  t*(elements k+1..n-1 of column k of V)
+                  subcolumn(V,j,k+1,n) += t*subcolumn(V,k,k+1,n);
                }
             }
-            for (int i = 0; i < n; i++) { // set column k of V to zero
-               V(i,k) = 0.0;
-            }
+            // set column k of V to zero
+            std::fill(column(V,k).begin(),column(V,k).end(),double(/*zero*/));
             V(k,k) = 1.0;
          }
       }
@@ -235,8 +216,8 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
 
       int pp = p-1;
       int iter = 0;
-      double eps = std::pow(2.0,-52);
-      double tiny = std::pow(2.0,-966);
+      double eps = std::numeric_limits<double>::epsilon();
+      double tiny = std::numeric_limits<double>::min();
       while (p > 0) {
          int k,kase;
 
@@ -416,9 +397,8 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                if (s(k) <= 0.0) {
                   s(k) = (s(k) < 0.0 ? -s(k) : 0.0);
                   if (wantv) {
-                     for (int i = 0; i < n; i++) { // multiply column k of V by -1
-                        V(i,k) = -V(i,k);
-                     }
+                     // multiply column k of V by -1
+                     column(V,k) *= -1.0;
                   }
                }
    
@@ -432,14 +412,12 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                   s(k) = s(k+1);
                   s(k+1) = t;
                   if (wantv && (k < n-1)) {
-                     for (int i = 0; i < n; i++) { // swap columns k and k+1 of V
-                        t = V(i,k+1); V(i,k+1) = V(i,k); V(i,k) = t;
-                     }
+                     // swap columns k and k+1 of V
+                     column(V,k).swap(column(V,k+1));
                   }
                   if (wantu && (k < m-1)) {
-                     for (int i = 0; i < m; i++) { // swap columns k and k+1 of U
-                        t = U(i,k+1); U(i,k+1) = U(i,k); U(i,k) = t;
-                     }
+                     // swap columns k and k+1 of U
+                     column(U,k).swap(column(U,k+1));
                   }
                   k++;
                }
@@ -455,8 +433,8 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
    @return     Number of nonnegligible singular values.
    */
 
-int SingularValueDecomposition::rank () const {
-      double tol = std::max(m,n)*s[0]*std::pow(2.0,-52);
+unsigned int SingularValueDecomposition::rank () const {
+      double tol = std::max(m,n)*s[0]*std::numeric_limits<double>::epsilon();
       int r = 0;
       for (unsigned i = 0; i < s.size(); i++) {
          if (s(i) > tol) {
