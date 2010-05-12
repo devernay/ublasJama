@@ -164,10 +164,6 @@
 				RelativePath=".\QRDecomposition.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\SingularValueDecomposition.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Fichiers d&apos;en-tête"
