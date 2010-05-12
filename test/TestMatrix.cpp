@@ -21,6 +21,7 @@ The stopping point should give an indication of where the problem exists.
 **/
 #include <iostream>
 #include <iomanip>
+#include <limits>
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/lagged_fibonacci.hpp>
@@ -49,7 +50,7 @@ typedef vector<int> PivotVector;
 /** Check magnitude of difference of scalars. **/
 
 static void check(double x, double y) {
-    double eps = std::pow(2.0,-52);
+    double eps = std::numeric_limits<double>::epsilon();
     if (x == 0 && std::abs(y) < 10*eps) return;
     if (y == 0 && std::abs(x) < 10*eps) return;
     if (std::abs(x-y) > 10*eps*std::max(std::abs(x),std::abs(y))) {
@@ -73,7 +74,7 @@ static void check(const Vector& x, const Vector& y) {
 /** Check norm of difference of Matrices. **/
 
 static void check(const Matrix& X, const Matrix& Y) {
-    double eps = std::pow(2.0,-52);
+    double eps = std::numeric_limits<double>::epsilon();
     if (norm_1(X) == 0. && norm_1(Y) < 10*eps) return;
     if (norm_1(Y) == 0. && norm_1(X) < 10*eps) return;
     if (norm_1(X-Y) > 1000*eps*std::max(norm_1(X),norm_1(Y))) {
@@ -125,7 +126,7 @@ static void print(Matrix m, int w, int d) {
     // Use format Fw.d for all elements.
     cout << "[\n";
     for(unsigned i=0; i<m.size1(); i++) {
-        print(matrix_row<Matrix>(m,i),w,d);
+        print(row(m,i),w,d);
     }
     cout << "]\n";
 }
@@ -283,7 +284,7 @@ int main (int argc, char **argv) {
          errorCount = try_failure(errorCount,"cond()...","incorrect condition number calculation");
       }
       int n = A.size2();
-      A = subrange(A,0,n,0,n);
+      A.resize(n,n,true);
       A(0,0) = 0.;
       LUDecomposition LU(A);
       try {

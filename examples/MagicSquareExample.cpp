@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <limits>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/numeric/ublas/io.hpp>
 #include "QRDecomposition.hpp"
@@ -136,7 +137,7 @@ int main (int argc, char **argv) {
       print("\n      n     trace       max_eig   rank        cond      lu_res      qr_res\n\n");
  
       //Date start_time = new Date();
-      double eps = std::pow(2.0,-52.0);
+      double eps = std::numeric_limits<double>::epsilon();
       for (int n = 3; n <= 32; n++) {
          print(fixedWidthIntegertoString(n,7));
 

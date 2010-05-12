@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <boost/math/special_functions/hypot.hpp>
 #include "EigenvalueDecomposition.hpp"
 
@@ -176,7 +177,7 @@ void EigenvalueDecomposition::tql2 () {
    
       double f = 0.0;
       double tst1 = 0.0;
-      double eps = std::pow(2.0,-52.0);
+      double eps = std::numeric_limits<double>::epsilon();
       for (int l = 0; l < n; l++) {
 
          // Find small subdiagonal element
@@ -407,7 +408,7 @@ void EigenvalueDecomposition::hqr2 () {
       int n = nn-1;
       int low = 0;
       int high = nn-1;
-      double eps = std::pow(2.0,-52);
+      double eps = std::numeric_limits<double>::epsilon();
       double exshift = 0.0;
       double p=0,q=0,r=0,s=0,z=0,t,w,x,y;
    
