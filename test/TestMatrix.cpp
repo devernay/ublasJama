@@ -184,7 +184,7 @@ int main (int argc, char **argv) {
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"QRDecomposition...","incorrect QR decomposition calculation");
       }
-      SingularValueDecomposition SVD(A,false,true,true); // non-lazy SVD
+      SingularValueDecomposition<double> SVD(A,false,true,true); // non-lazy SVD
       try {
          Matrix US = prod(SVD.getU(),SVD.getS());
          check(A,prod(US,trans(SVD.getV())));
@@ -206,7 +206,7 @@ int main (int argc, char **argv) {
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"SingularValueDecomposition(V)...","V is not orthonormal");
       }
-      SingularValueDecomposition SVDl(A); // lazy SVD
+      SingularValueDecomposition<double> SVDl(A); // lazy SVD
       try {
          Matrix US = prod(SVDl.getU(),SVDl.getS());
          check(A,prod(US,trans(SVDl.getV())));
@@ -214,7 +214,7 @@ int main (int argc, char **argv) {
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"SingularValueDecomposition(lazy)...","incorrect singular value decomposition calculation");
       }
-      SingularValueDecomposition SVDID(IdentityMatrix(3,3));
+      SingularValueDecomposition<double> SVDID(IdentityMatrix(3,3));
       try {
           /*
             cout << "U=";
@@ -243,7 +243,7 @@ int main (int argc, char **argv) {
                       AR(i,j) = value;
                   }
               }
-              SingularValueDecomposition SVD(AR,false,true,true); // non-lazy SVD
+              SingularValueDecomposition<double> SVD(AR,false,true,true); // non-lazy SVD
               Matrix US = prod(SVD.getU(),SVD.getS());
               check(AR,prod(US,trans(SVD.getV())));
               Matrix UtU = prod(trans(SVD.getU()),SVD.getU()); // U is 4x4 because of non-lazy SVD
@@ -262,7 +262,7 @@ int main (int argc, char **argv) {
             DEF(i,j) = rankdef[i][j];
          }
       }
-      SVD = SingularValueDecomposition(DEF);
+      SVD = SingularValueDecomposition<double>(DEF);
       try {
          check(SVD.rank(),std::min(DEF.size1(),DEF.size2())-1);
          try_success("rank()...","");
@@ -275,7 +275,7 @@ int main (int argc, char **argv) {
             B(i,j) = condmat[i][j];
          }
       }
-      SVD = SingularValueDecomposition(B); 
+      SVD = SingularValueDecomposition<double>(B); 
       Vector singularvalues = SVD.getSingularValues();
       try {
          check(SVD.cond(),singularvalues(0)/singularvalues(std::min(B.size1(),B.size2())-1));

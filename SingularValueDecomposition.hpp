@@ -31,10 +31,11 @@
 
 namespace boost { namespace numeric { namespace ublas {
             
+template<class T>
 class SingularValueDecomposition {
 
-    typedef vector<double> Vector;
-    typedef matrix<double> Matrix;
+    typedef vector<T> vector_type;
+    typedef matrix<T> matrix_type;
 
 /* ------------------------
    Class variables
@@ -44,12 +45,12 @@ class SingularValueDecomposition {
    @serial internal storage of U.
    @serial internal storage of V.
    */
-   Matrix U, V;
+   matrix_type U, V;
 
    /** Array for internal storage of singular values.
    @serial internal storage of singular values.
    */
-   Vector s;
+   vector_type s;
 
    /** Row and column dimensions.
    @serial row dimension.
@@ -71,13 +72,13 @@ class SingularValueDecomposition {
    @param wantv If true generate the V matrix
    @return     Structure to access U, S and V.
    */
-   inline void init (const Matrix &Arg, bool thin, bool wantu, bool wantv);
+   inline void init (const matrix_type &Arg, bool thin, bool wantu, bool wantv);
 
-   static matrix_vector_slice<Matrix> subcolumn(Matrix& M,size_t c,size_t start,size_t stop) {
-      return matrix_vector_slice<Matrix> (M, slice(start,1,stop-start), slice(c,0,stop-start));
+   static matrix_vector_slice<matrix_type> subcolumn(matrix_type& M,size_t c,size_t start,size_t stop) {
+      return matrix_vector_slice<matrix_type> (M, slice(start,1,stop-start), slice(c,0,stop-start));
    }
-   static matrix_vector_slice<Matrix> subrow(Matrix& M,size_t r,size_t start,size_t stop) {
-      return matrix_vector_slice<Matrix> (M, slice(r,0,stop-start), slice(start,1,stop-start));
+   static matrix_vector_slice<matrix_type> subrow(matrix_type& M,size_t r,size_t start,size_t stop) {
+      return matrix_vector_slice<matrix_type> (M, slice(r,0,stop-start), slice(start,1,stop-start));
    }
 
 public:
@@ -89,7 +90,7 @@ public:
    @return     Structure to access U, S and V.
    */
    
-   SingularValueDecomposition (const Matrix &Arg) {
+   SingularValueDecomposition (const matrix_type &Arg) {
       init(Arg,true,true,true);
    }
    
@@ -105,7 +106,7 @@ public:
    @return     Structure to access U, S and V.
    */
 
-   SingularValueDecomposition (const Matrix &Arg, bool thin, bool wantu, bool wantv) {
+   SingularValueDecomposition (const matrix_type &Arg, bool thin, bool wantu, bool wantv) {
       init(Arg,thin,wantu,wantv);
    }
     
@@ -117,7 +118,7 @@ public:
    @return     U
    */
 
-   const Matrix& getU () const {
+   const matrix_type& getU () const {
       return U;
    }
 
@@ -125,7 +126,7 @@ public:
    @return     V
    */
 
-   const Matrix& getV () const {
+   const matrix_type& getV () const {
       return V;
    }
 
@@ -133,7 +134,7 @@ public:
    @return     diagonal of S.
    */
 
-   const Vector& getSingularValues () const {
+   const vector_type& getSingularValues () const {
       return s;
    }
 
@@ -141,8 +142,8 @@ public:
    @return     S
    */
 
-   Matrix getS () const {
-      Matrix S(m>=n?(thin?n:ncu):ncu,n,0.0);
+   matrix_type getS () const {
+      matrix_type S(m>=n?(thin?n:ncu):ncu,n,T/*zero*/());
       for (int i = std::min(m,n)-1; i >= 0; i--) {
          S(i,i) = s(i);
       }
@@ -153,10 +154,10 @@ public:
    @return     S+
    */
    
-   Matrix getreciprocalS () const {
-      Matrix S(n,m>=n?(thin?n:ncu):ncu,0.0);
+   matrix_type getreciprocalS () const {
+      matrix_type S(n,m>=n?(thin?n:ncu):ncu,T/*zero*/());
       for (int i = std::min(m,n)-1; i>=0; i--)
-         S(i,i) = s(i)==0.0?0.0:1.0/s(i);
+         S(i,i) = s(i)==T/*zero*/()?0.0:1.0/s(i);
       return S;
    }
    
@@ -166,8 +167,8 @@ public:
    @return     null vector
    */
 
-   matrix_column<const Matrix> getNullVector () const {
-       return matrix_column<const Matrix>(V, n-1);
+   matrix_column<const matrix_type> getNullVector () const {
+       return matrix_column<const matrix_type>(V, n-1);
    }
 
    /** Return the Moore-Penrose (generalized) inverse
@@ -176,18 +177,18 @@ public:
    @return     A+
    */
    
-   Matrix inverse(bool omit = true) const {
-      Matrix inverse(n,m);
+   matrix_type inverse(bool omit = true) const {
+      matrix_type inverse(n,m);
       if(rank()> 0) {
-         Vector reciprocalS(s.size());
+         vector_type reciprocalS(s.size());
          if (omit) {
-            double tol = std::max(m,n)*s(0)*std::numeric_limits<double>::epsilon();
+            T tol = std::max(m,n)*s(0)*std::numeric_limits<T>::epsilon();
             for (int i = s.size()-1;i>=0;i--)
                reciprocalS(i) = std::abs(s(i))<tol?0.0:1.0/s(i);
          }
          else
             for (int i=s.size()-1;i>=0;i--)
-               reciprocalS(i) = s(i)==0.0?0.0:1.0/s(i);
+               reciprocalS(i) = s(i)==T/*zero*/()?0.0:1.0/s(i);
          int min = std::min(n, ncu);
          for (int i = n-1; i >= 0; i--)
             for (int j = m-1; j >= 0; j--)
@@ -201,7 +202,7 @@ public:
    @return     max(S)
    */
 
-   double norm2 () const {
+   T norm2 () const {
       return s(0);
    }
 
@@ -209,7 +210,7 @@ public:
    @return     max(S)/min(S)
    */
 
-   double cond () const {
+   T cond () const {
       return s(0)/s(std::min(m,n)-1);
    }
 
@@ -218,7 +219,7 @@ public:
    */
 
    inline unsigned int rank () const {
-      double tol = std::max(m,n)*s[0]*std::numeric_limits<double>::epsilon();
+      T tol = std::max(m,n)*s[0]*std::numeric_limits<T>::epsilon();
       int r = 0;
       for (unsigned i = 0; i < s.size(); i++) {
          if (s(i) > tol) {
@@ -230,25 +231,26 @@ public:
 
 };
 
-void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu, bool wantv) {
+template<class T>
+void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, bool wantu, bool wantv) {
 
    // Derived from LINPACK code.
    // Initialize.
-   Matrix A = Arg;
+   matrix_type A = Arg;
    m = Arg.size1();
    n = Arg.size2();
    this->thin = thin;
 
    ncu = thin?std::min(m,n):m;
-   s = Vector(std::min(m+1,n));
+   s = vector_type(std::min(m+1,n));
    if (wantu) {
-      U = Matrix(m,ncu,0.0);
+      U = matrix_type(m,ncu,T/*zero*/());
    }
    if (wantv) {
-      V = Matrix(n,n,0.0);
+      V = matrix_type(n,n,T/*zero*/());
    }
-   Vector e(n);
-   Vector work(m);
+   vector_type e(n);
+   vector_type work(m);
 
    // Reduce A to bidiagonal form, storing the diagonal elements
    // in s and the super-diagonal elements in e.
@@ -264,8 +266,8 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
          // Compute 2-norm of k-th column without under/overflow.
          // s(k) = norm of elements k..m-1 of column k of A
          s(k) = norm_2(subcolumn(A,k,k,m));
-         if (s(k) != 0.0) {
-            if (A(k,k) < 0.0) {
+         if (s(k) != T/*zero*/()) {
+            if (A(k,k) < T/*zero*/()) {
                s(k) = -s(k);
             }
             // divide elements k..m-1 of column k of A by s(k)
@@ -275,12 +277,12 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
          s(k) = -s(k);
       }
       for (int j = k+1; j < n; j++) {
-         if ((k < nct) && (s(k) != 0.0))  {
+         if ((k < nct) && (s(k) != T/*zero*/()))  {
 
             // Apply the transformation.
 
             // t = dot-product of elements k..m-1 of columns k and j of A
-            double t = inner_prod(subcolumn(A,k,k,m),subcolumn(A,j,k,m));
+            T t = inner_prod(subcolumn(A,k,k,m),subcolumn(A,j,k,m));
             t = -t/A(k,k);
             // elements k..m-1 of column j of A +=  t*(elements k..m-1 of column k of A)
             subcolumn(A,j,k,m) += t*subcolumn(A,k,k,m);
@@ -306,8 +308,8 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
          // Compute 2-norm without under/overflow.
          // e(k) = norm of elements k+1..n-1 of e
          e(k) = norm_2(subrange(e,k+1,n));
-         if (e(k) != 0.0) {
-            if (e(k+1) < 0.0) {
+         if (e(k) != T/*zero*/()) {
+            if (e(k+1) < T/*zero*/()) {
                e(k) = -e(k);
             }
             // divide elements k+1..n-1 of e by e(k)
@@ -315,7 +317,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             e(k+1) += 1.0;
          }
          e(k) = -e(k);
-         if ((k+1 < m) && (e(k) != 0.0)) {
+         if ((k+1 < m) && (e(k) != T/*zero*/())) {
 
             // Apply the transformation.
 
@@ -325,7 +327,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // elements k+1..m-1 of work = A.submatrix(k+1..m-1,k+1..n-1)*elements k+1..n-1 of e
             noalias(subrange(work, k+1, m)) = prod(subrange(A,k+1,m,k+1,n),subrange(e,k+1,n));
             for (int j = k+1; j < n; j++) {
-               double t = -e(j)/e(k+1);
+               T t = -e(j)/e(k+1);
                // elements k+1..m-1 of column j of A += t*elements k+1..m-1 of work
                subcolumn(A,j,k+1,m) += t*subrange(work,k+1,m);
             }
@@ -360,14 +362,14 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
    if (wantu) {
       for (int j = nct; j < ncu; j++) {
          // set column j of U to zero
-         std::fill(column(U,j).begin(),column(U,j).end(),double(/*zero*/));
+         std::fill(column(U,j).begin(),column(U,j).end(),T/*zero*/());
          U(j,j) = 1.0;
       }
       for (int k = nct-1; k >= 0; k--) {
-         if (s(k) != 0.0) {
+         if (s(k) != T/*zero*/()) {
             for (int j = k+1; j < ncu; j++) {
                // t = dot-product of elements k..m-1 of columns k and j of U
-               double t = inner_prod(subcolumn(U,k,k,m),subcolumn(U,j,k,m));
+               T t = inner_prod(subcolumn(U,k,k,m),subcolumn(U,j,k,m));
                t /= -U(k,k);
                // elements k..m-1 of column j of U +=  t*(elements k..m-1 of column k of U)
                subcolumn(U,j,k,m) += t*subcolumn(U,k,k,m);
@@ -378,12 +380,12 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             if(k-1 > 0) {
                // set elements 0..k-2 of column k of U to zero.
                for (int i = 0; i < k-1; i++) { 
-                  U(i,k) = 0.0;
+                  U(i,k) = T/*zero*/();
                }
             }
          } else {
             // set column k of U to zero
-            std::fill(column(U,k).begin(),column(U,k).end(),double(/*zero*/));
+            std::fill(column(U,k).begin(),column(U,k).end(),T/*zero*/());
             U(k,k) = 1.0;
          }
       }
@@ -393,17 +395,17 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
 
    if (wantv) {
       for (int k = n-1; k >= 0; k--) {
-         if ((k < nrt) && (e(k) != 0.0)) {
+         if ((k < nrt) && (e(k) != T/*zero*/())) {
             for (int j = k+1; j < n; j++) {
                // t = dot-product of elements k+1..n-1 of columns k and j of V
-               double t = inner_prod(subcolumn(V,k,k+1,n),subcolumn(V,j,k+1,n));
+               T t = inner_prod(subcolumn(V,k,k+1,n),subcolumn(V,j,k+1,n));
                t /= -V(k+1,k);
                // elements k+1..n-1 of column j of V +=  t*(elements k+1..n-1 of column k of V)
                subcolumn(V,j,k+1,n) += t*subcolumn(V,k,k+1,n);
             }
          }
          // set column k of V to zero
-         std::fill(column(V,k).begin(),column(V,k).end(),double(/*zero*/));
+         std::fill(column(V,k).begin(),column(V,k).end(),T/*zero*/());
          V(k,k) = 1.0;
       }
    }
@@ -412,8 +414,8 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
 
    int pp = p-1;
    int iter = 0;
-   double eps = std::numeric_limits<double>::epsilon();
-   double tiny = std::numeric_limits<double>::min();
+   T eps = std::numeric_limits<T>::epsilon();
+   T tiny = std::numeric_limits<T>::min();
    while (p > 0) {
       int k,kase;
 
@@ -447,7 +449,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             if (ks == k) {
                break;
             }
-            double t = (ks != p ? std::abs(e(ks)) : 0.) + 
+            T t = (ks != p ? std::abs(e(ks)) : 0.) + 
                   (ks != k+1 ? std::abs(e(ks-1)) : 0.);
             if (std::abs(s(ks)) <= tiny + eps*t)  {
                s[ks] = 0.0;
@@ -472,12 +474,12 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
          // Deflate negligible s(p).
 
          case 1: {
-            double f = e(p-2);
+            T f = e(p-2);
             e[p-2] = 0.0;
             for (int j = p-2; j >= k; j--) {
-               double t = boost::math::hypot(s(j),f);
-               double cs = s(j)/t;
-               double sn = f/t;
+               T t = boost::math::hypot(s(j),f);
+               T cs = s(j)/t;
+               T sn = f/t;
                s(j) = t;
                if (j != k) {
                   f = -sn*e(j-1);
@@ -497,12 +499,12 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
             // Split at negligible s(k).
 
          case 2: {
-            double f = e(k-1);
+            T f = e(k-1);
             e[k-1] = 0.0;
             for (int j = k; j < p; j++) {
-               double t = boost::math::hypot(s(j),f);
-               double cs = s(j)/t;
-               double sn = f/t;
+               T t = boost::math::hypot(s(j),f);
+               T cs = s(j)/t;
+               T sn = f/t;
                s(j) = t;
                f = -sn*e(j);
                e(j) = cs*e(j);
@@ -523,33 +525,33 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
 
             // Calculate the shift.
    
-            double scale = std::max(std::max(std::max(std::max(
+            T scale = std::max(std::max(std::max(std::max(
                 std::abs(s(p-1)),std::abs(s(p-2))),std::abs(e(p-2))), 
                                              std::abs(s(k))),std::abs(e(k)));
-            double sp = s(p-1)/scale;
-            double spm1 = s(p-2)/scale;
-            double epm1 = e(p-2)/scale;
-            double sk = s(k)/scale;
-            double ek = e(k)/scale;
-            double b = ((spm1 + sp)*(spm1 - sp) + epm1*epm1)/2.0;
-            double c = (sp*epm1)*(sp*epm1);
-            double shift = 0.0;
-            if ((b != 0.0) || (c != 0.0)) {
+            T sp = s(p-1)/scale;
+            T spm1 = s(p-2)/scale;
+            T epm1 = e(p-2)/scale;
+            T sk = s(k)/scale;
+            T ek = e(k)/scale;
+            T b = ((spm1 + sp)*(spm1 - sp) + epm1*epm1)/2.0;
+            T c = (sp*epm1)*(sp*epm1);
+            T shift = 0.0;
+            if ((b != T/*zero*/()) || (c != T/*zero*/())) {
                shift = std::sqrt(b*b + c);
-               if (b < 0.0) {
+               if (b < T/*zero*/()) {
                   shift = -shift;
                }
                shift = c/(b + shift);
             }
-            double f = (sk + sp)*(sk - sp) + shift;
-            double g = sk*ek;
+            T f = (sk + sp)*(sk - sp) + shift;
+            T g = sk*ek;
    
             // Chase zeros.
    
             for (int j = k; j < p-1; j++) {
-               double t = boost::math::hypot(f,g);
-               double cs = f/t;
-               double sn = g/t;
+               T t = boost::math::hypot(f,g);
+               T cs = f/t;
+               T sn = g/t;
                if (j != k) {
                   e(j-1) = t;
                }
@@ -590,8 +592,8 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
          case 4: {
             // Make the singular values positive.
    
-            if (s(k) <= 0.0) {
-               s(k) = (s(k) < 0.0 ? -s(k) : 0.0);
+            if (s(k) <= T/*zero*/()) {
+               s(k) = (s(k) < T/*zero*/() ? -s(k) : 0.0);
                if (wantv) {
                   // multiply column k of V by -1
                   column(V,k) *= -1.0;
@@ -604,7 +606,7 @@ void SingularValueDecomposition::init (const Matrix &Arg, bool thin, bool wantu,
                if (s(k) >= s(k+1)) {
                   break;
                }
-               double t = s(k);
+               T t = s(k);
                s(k) = s(k+1);
                s(k+1) = t;
                if (wantv && (k < n-1)) {
