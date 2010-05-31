@@ -72,7 +72,7 @@ class SingularValueDecomposition {
    @param wantv If true generate the V matrix
    @return     Structure to access U, S and V.
    */
-   inline void init (const matrix_type &Arg, bool thin, bool wantu, bool wantv);
+   void init (const matrix_type &Arg, bool thin, bool wantu, bool wantv);
 
    static matrix_vector_slice<matrix_type> subcolumn(matrix_type& M,size_t c,size_t start,size_t stop) {
       return matrix_vector_slice<matrix_type> (M, slice(start,1,stop-start), slice(c,0,stop-start));
