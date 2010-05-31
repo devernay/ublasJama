@@ -150,7 +150,7 @@ int main (int argc, char **argv) {
          Vector d = E.getRealEigenvalues();
          print(fixedWidthDoubletoString(d(n-1),14,3));
 
-         SingularValueDecomposition SVD(M);
+         SingularValueDecomposition<double> SVD(M);
          int r = SVD.rank();
          print(fixedWidthIntegertoString(r,7));
 
