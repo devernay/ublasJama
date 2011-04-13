@@ -29,7 +29,10 @@ Changes since ublasJama 1.0.2.2:
  - Add a method isSymmetric() that exposes the already existing field issymmetric
    in the EigenvalueDecomposition class.
 - Check for bug http://cio.nist.gov/esd/emaildir/lists/jama/msg01528.html
+  (bug was not present)
 - check for bug http://cio.nist.gov/esd/emaildir/lists/jama/msg01525.html
+  (bug was present and is *fixed* in EigenvalueDecomposition.cpp - see
+  README-Eigenbug.txt for an explanation)
  
 Changes since ublasJama 1.0.2.1:
 - applied fixes and enhancements to SVD, based on Jama fixes by by Andreas Kyrmegalos:
