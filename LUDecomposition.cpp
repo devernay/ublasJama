@@ -161,9 +161,10 @@ LUDecomposition::LUDecomposition (const Matrix& A) {
    */
 
 LUDecomposition::Matrix LUDecomposition::getL () const {
-      Matrix L(m,n);
+      int d = std::min(m,n);
+      Matrix L(m,d);
       for (int i = 0; i < m; i++) {
-         for (int j = 0; j < n; j++) {
+         for (int j = 0; j < d; j++) {
             if (i > j) {
                L(i,j) = LU(i,j);
             } else if (i == j) {
@@ -181,8 +182,9 @@ LUDecomposition::Matrix LUDecomposition::getL () const {
    */
 
 LUDecomposition::Matrix LUDecomposition::getU () const {
-      Matrix U(n,n);
-      for (int i = 0; i < n; i++) {
+      int d = std::min(m,n);
+      Matrix U(d,n);
+      for (int i = 0; i < d; i++) {
          for (int j = 0; j < n; j++) {
             if (i <= j) {
                U(i,j) = LU(i,j);
