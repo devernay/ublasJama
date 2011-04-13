@@ -611,14 +611,12 @@ void EigenvalueDecomposition::hqr2 () {
                   q = H(k+1,k-1);
                   r = (notlast ? H(k+2,k-1) : 0.0);
                   x = std::abs(p) + std::abs(q) + std::abs(r);
-                  if (x != 0.0) {
-                     p = p / x;
-                     q = q / x;
-                     r = r / x;
+                  if (x == 0.0) {
+                       continue;
                   }
-               }
-               if (x == 0.0) {
-                  break;
+                  p = p / x;
+                  q = q / x;
+                  r = r / x;
                }
                s = std::sqrt(p * p + q * q + r * r);
                if (p < 0) {

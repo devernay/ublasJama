@@ -60,6 +60,15 @@ static void check(double x, double y) {
     }
 }
 
+/** Check scalars. **/
+
+static void check_lessthan(double x, double y) {
+    if (x < y) return;
+    std::ostringstream oss;
+    oss << "x is more than or equal to y: x = " << x << "  y = " << y;
+    throw internal_logic(oss.str().c_str());
+}
+
 /** Check norm of difference of "vectors". **/
 
 #if 0
@@ -374,6 +383,111 @@ int main (int argc, char **argv) {
          errorCount = try_failure(errorCount,"EigenvalueDecomposition (nonsymmetric)...","incorrect nonsymmetric Eigenvalue decomposition calculation");
       }
 
+      try {
+           const double mean = 0.0;
+           const double sigma = 1.0;
+           boost::normal_distribution<double> norm_dist(mean, sigma);
+           boost::lagged_fibonacci19937 engine;
+           for(unsigned k=20; k<=40; k++) { // 21 tries should be OK
+              Matrix AR(k,k);
+              for(unsigned i=0; i<AR.size1(); i++) {
+                  for(unsigned j=0; j<=i; j++) {
+                      const double value = norm_dist.operator () <boost::lagged_fibonacci19937>((engine));
+                      AR(i,j) = value;
+                      AR(j,i) = value;
+                  }
+              }
+              Eig = EigenvalueDecomposition(AR);
+              D = Eig.getD();
+              V = Eig.getV();
+              check(prod(AR,V),prod(V,D));
+           }
+          try_success("EigenvalueDecomposition(symmetric,random)...","");
+      } catch ( std::exception e ) {
+         errorCount = try_failure(errorCount,"EigenvalueDecomposition(symmetric,random)...","incorrect symmetric Eigenvalue decomposition calculation");
+      }
+
+      try {
+           const double mean = 0.0;
+           const double sigma = 1.0;
+           boost::normal_distribution<double> norm_dist(mean, sigma);
+           boost::lagged_fibonacci19937 engine;
+           for(unsigned k=20; k<=40; k++) { // 21 tries should be OK
+              Matrix AR(k,k);
+              for(unsigned i=0; i<AR.size1(); i++) {
+                  for(unsigned j=0; j<AR.size2(); j++) {
+                      const double value = norm_dist.operator () <boost::lagged_fibonacci19937>((engine));
+                      AR(i,j) = value;
+                  }
+              }
+              Eig = EigenvalueDecomposition(AR);
+              D = Eig.getD();
+              V = Eig.getV();
+              check(prod(AR,V),prod(V,D));
+           }
+          try_success("EigenvalueDecomposition(nonsymmetric,random)...","");
+      } catch ( std::exception e ) {
+         errorCount = try_failure(errorCount,"EigenvalueDecomposition(nonsymmetric,random)...","incorrect nonsymmetric Eigenvalue decomposition calculation");
+      }
+
+
+      try {
+          // Bug from http://cio.nist.gov/esd/emaildir/lists/jama/msg01528.html :
+          // all eigenvalues should be zero.
+          // then Jama comes up with a largest Eigenvalue of 0.5 or something instead of a
+          // 0.0 what is the correct value.
+          // Interesting is, that Jama gives the correct 0.0 solution if you transpose this
+          // matrix, e.g. put the "1.0"s above the main diagonal.
+          // http://cio.nist.gov/esd/emaildir/lists/jama/msg01527.html says that the order of magnitude
+          // should be .0032
+          double eigenbug1[6][6] = {{0., 0., 0., 0., 0., 0.},
+                                    {1., 0., 0., 0., 0., 0.},
+                                    {0., 1., 0., 0., 0., 0.},
+                                    {0., 0., 1., 0., 0., 0.},
+                                    {0., 0., 0., 1., 0., 0.},
+                                    {0., 0., 0., 0., 1., 0.}};
+          A.resize(6,6);
+          for(unsigned i=0; i<A.size1(); i++) {
+              for(unsigned j=0; j<A.size2(); j++) {
+                  A(i,j) = eigenbug1[i][j];
+              }
+          }
+          Eig = EigenvalueDecomposition(A);
+          Vector d = Eig.getRealEigenvalues();
+          Vector e = Eig.getImagEigenvalues();
+          double eps = 0.0032;
+          for(unsigned i=0; i<d.size(); i++) {
+              check_lessthan(fabs(d(i)), eps);
+          }
+          for(unsigned i=0; i<e.size(); i++) {
+              check_lessthan(fabs(e(i)), eps);
+          }
+          try_success("EigenvalueDecomposition(special1)...","");
+      } catch ( std::exception e ) {
+          errorCount = try_failure(errorCount,"EigenvalueDecomposition(special1)...","incorrect nonsymmetric Eigenvalue decomposition calculation");
+      }
+      try {
+          // Bug from http://cio.nist.gov/esd/emaildir/lists/jama/msg01525.html :
+          // eigenvalue decomposition gets stuck! fixed in ublasJama 1.0.2.3.
+          double eigenbug2[5][5] = {{0., 0., 0., 0., 0.},
+                                    {0., 0., 0., 0., 1.},
+                                    {0., 0., 0., 1., 0.},
+                                    {1., 1., 0., 0., 1.},
+                                    {1., 0., 1., 0., 1.}};
+          A.resize(5,5);
+          for(unsigned i=0; i<A.size1(); i++) {
+              for(unsigned j=0; j<A.size2(); j++) {
+                  A(i,j) = eigenbug2[i][j];
+              }
+          }
+          Eig = EigenvalueDecomposition(A);
+          D = Eig.getD();
+          V = Eig.getV();
+          check(prod(A,V),prod(V,D));
+          try_success("EigenvalueDecomposition(special2)...","");
+      } catch ( std::exception e ) {
+         errorCount = try_failure(errorCount,"EigenvalueDecomposition(special2)...","incorrect nonsymmetric Eigenvalue decomposition calculation");
+      }
       cout << "\nTestMatrix completed.\n";
       cout << "Total errors reported: " << errorCount << "\n";
       cout << "Total warnings reported: " << warningCount << "\n";

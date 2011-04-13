@@ -1,4 +1,4 @@
-This ublasJama 1.0.2.2, based on Jama 1.0.2
+This ublasJama 1.0.2.3, based on Jama 1.0.2
 
 ublasJama is translation of the public domain Jama (Java Matrix
 Package <http://math.nist.gov/javanumerics/jama/>) 1.0.2 to C++ using
@@ -21,6 +21,16 @@ There are two test programs:
 - TestMatrix, in subdirectory test  - the original Jama tests, where only the relevant tests were kept.
 - MagicSquareExample, in subdirectory examples
 
+Changes since ublasJama 1.0.2.2:
+- from http://ojalgo.org/generated/org/ojalgo/matrix/jama/package-summary.html:
+ -"The getL() and getU() methods of the LU decomposition should be modified.
+   Introduce a new parameter d that is the minimum of m and n.
+   Use that to set the column dimension of L and the row dimension of U."
+ - Add a method isSymmetric() that exposes the already existing field issymmetric
+   in the EigenvalueDecomposition class.
+- Check for bug http://cio.nist.gov/esd/emaildir/lists/jama/msg01528.html
+- check for bug http://cio.nist.gov/esd/emaildir/lists/jama/msg01525.html
+ 
 Changes since ublasJama 1.0.2.1:
 - applied fixes and enhancements to SVD, based on Jama fixes by by Andreas Kyrmegalos:
   - explanation: http://cio.nist.gov/esd/emaildir/lists/jama/msg01430.html
