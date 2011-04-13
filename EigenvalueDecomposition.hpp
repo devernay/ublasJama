@@ -99,6 +99,13 @@ public:
    Public Methods
  * ------------------------ */
 
+   /** Is the matrix symmetric?
+   @return     true if A is symmetric.
+   */
+   bool isSymmetric() const {
+       return issymmetric;
+   }
+    
    /** Return the eigenvector matrix
    @return     V
    */
