@@ -251,6 +251,7 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
    }
    vector_type e(n);
    vector_type work(m);
+   vector_type work2(n);
 
    // Reduce A to bidiagonal form, storing the diagonal elements
    // in s and the super-diagonal elements in e.
@@ -321,9 +322,10 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
 
             // Apply the transformation.
 
-            for (int i = k+1; i < m; i++) {
-               work(i) = 0.0;
-            }
+            // The following is useless, since this section of work is overwritten afterwards
+            //for (int i = k+1; i < m; i++) {
+            //   work(i) = 0.0;
+            //}
             // elements k+1..m-1 of work = A.submatrix(k+1..m-1,k+1..n-1)*elements k+1..n-1 of e
             noalias(subrange(work, k+1, m)) = prod(subrange(A,k+1,m,k+1,n),subrange(e,k+1,n));
             for (int j = k+1; j < n; j++) {
@@ -362,7 +364,7 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
    if (wantu) {
       for (int j = nct; j < ncu; j++) {
          // set column j of U to zero
-         std::fill(column(U,j).begin(),column(U,j).end(),T/*zero*/());
+         column(U,j) = zero_vector<T>(m);
          U(j,j) = 1.0;
       }
       for (int k = nct-1; k >= 0; k--) {
@@ -378,14 +380,15 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
             subcolumn(U,k,k,m) *= -1.0;
             U(k,k) += 1.0;
             if(k-1 > 0) {
-               // set elements 0..k-2 of column k of U to zero.
-               for (int i = 0; i < k-1; i++) { 
-                  U(i,k) = T/*zero*/();
-               }
+                // set elements 0..k-2 of column k of U to zero.
+                //for (int i = 0; i < k-1; i++) { 
+                //   U(i,k) = T/*zero*/();
+                //}
+                subcolumn(U, k, 0, k-1) = zero_vector<T>(k-1);
             }
          } else {
             // set column k of U to zero
-            std::fill(column(U,k).begin(),column(U,k).end(),T/*zero*/());
+            column(U,k) = zero_vector<T>(m);
             U(k,k) = 1.0;
          }
       }
@@ -405,7 +408,7 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
             }
          }
          // set column k of V to zero
-         std::fill(column(V,k).begin(),column(V,k).end(),T/*zero*/());
+         column(V,k) = zero_vector<T>(n);
          V(k,k) = 1.0;
       }
    }
@@ -475,7 +478,7 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
 
          case 1: {
             T f = e(p-2);
-            e[p-2] = 0.0;
+            e(p-2) = 0.0;
             for (int j = p-2; j >= k; j--) {
                T t = boost::math::hypot(s(j),f);
                T cs = s(j)/t;
@@ -486,11 +489,14 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
                   e(j-1) = cs*e(j-1);
                }
                if (wantv) {
-                  for (int i = 0; i < n; i++) {
-                     t = cs*V(i,j) + sn*V(i,p-1);
-                     V(i,p-1) = -sn*V(i,j) + cs*V(i,p-1);
-                     V(i,j) = t;
-                  }
+                  //for (int i = 0; i < n; i++) {
+                  //   t = cs*V(i,j) + sn*V(i,p-1);
+                  //   V(i,p-1) = -sn*V(i,j) + cs*V(i,p-1);
+                  //   V(i,j) = t;
+                  //}
+                  work2 = cs*column(V,j) + sn*column(V,p-1);
+                  column(V,p-1) = -sn*column(V,j) + cs*column(V,p-1);
+                  column(V,j) = work2;
                }
             }
          }
@@ -500,7 +506,7 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
 
          case 2: {
             T f = e(k-1);
-            e[k-1] = 0.0;
+            e(k-1) = 0.0;
             for (int j = k; j < p; j++) {
                T t = boost::math::hypot(s(j),f);
                T cs = s(j)/t;
@@ -509,11 +515,14 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
                f = -sn*e(j);
                e(j) = cs*e(j);
                if (wantu) {
-                  for (int i = 0; i < m; i++) {
-                     t = cs*U(i,j) + sn*U(i,k-1);
-                     U(i,k-1) = -sn*U(i,j) + cs*U(i,k-1);
-                     U(i,j) = t;
-                  }
+                  //for (int i = 0; i < m; i++) {
+                  //   t = cs*U(i,j) + sn*U(i,k-1);
+                  //   U(i,k-1) = -sn*U(i,j) + cs*U(i,k-1);
+                  //   U(i,j) = t;
+                  //}
+                  work = cs*column(U,j) + sn*column(U,k-1);
+                  column(U,k-1) = -sn*column(U,j) + cs*column(U,k-1);
+                  column(U,j) = work;
                }
             }
          }
@@ -560,11 +569,14 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
                g = sn*s(j+1);
                s(j+1) = cs*s(j+1);
                if (wantv) {
-                  for (int i = 0; i < n; i++) {
-                     t = cs*V(i,j) + sn*V(i,j+1);
-                     V(i,j+1) = -sn*V(i,j) + cs*V(i,j+1);
-                     V(i,j) = t;
-                  }
+                  //for (int i = 0; i < n; i++) {
+                  //   t = cs*V(i,j) + sn*V(i,j+1);
+                  //   V(i,j+1) = -sn*V(i,j) + cs*V(i,j+1);
+                  //   V(i,j) = t;
+                  //}
+                  work2 = cs*column(V,j) + sn*column(V,j+1);
+                  column(V,j+1) = -sn*column(V,j) + cs*column(V,j+1);
+                  column(V,j) = work2;
                }
                t = boost::math::hypot(f,g);
                cs = f/t;
@@ -575,11 +587,14 @@ void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, boo
                g = sn*e(j+1);
                e(j+1) = cs*e(j+1);
                if (wantu && (j < m-1)) {
-                  for (int i = 0; i < m; i++) {
-                     t = cs*U(i,j) + sn*U(i,j+1);
-                     U(i,j+1) = -sn*U(i,j) + cs*U(i,j+1);
-                     U(i,j) = t;
-                  }
+                  //for (int i = 0; i < m; i++) {
+                  //   t = cs*U(i,j) + sn*U(i,j+1);
+                  //   U(i,j+1) = -sn*U(i,j) + cs*U(i,j+1);
+                  //   U(i,j) = t;
+                  //}
+                  work = cs*column(U,j) + sn*column(U,j+1);
+                  column(U,j+1) = -sn*column(U,j) + cs*column(U,j+1);
+                  column(U,j) = work;
                }
             }
             e(p-2) = f;
