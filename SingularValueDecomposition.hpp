@@ -142,7 +142,7 @@ public:
    @return     S
    */
 
-   matrix_type getS () const {
+   const matrix_type getS () const {
       matrix_type S(m>=n?(thin?n:ncu):ncu,n,T/*zero*/());
       for (int i = std::min(m,n)-1; i >= 0; i--) {
          S(i,i) = s(i);
@@ -154,7 +154,7 @@ public:
    @return     S+
    */
    
-   matrix_type getreciprocalS () const {
+   const matrix_type getreciprocalS () const {
       matrix_type S(n,m>=n?(thin?n:ncu):ncu,T/*zero*/());
       for (int i = std::min(m,n)-1; i>=0; i--)
          S(i,i) = s(i)==T/*zero*/()?0.0:1.0/s(i);
@@ -167,7 +167,7 @@ public:
    @return     null vector
    */
 
-   matrix_column<const matrix_type> getNullVector () const {
+   const matrix_column<const matrix_type> getNullVector () const {
        return matrix_column<const matrix_type>(V, n-1);
    }
 
@@ -177,7 +177,7 @@ public:
    @return     A+
    */
    
-   matrix_type inverse(bool omit = true) const {
+   const matrix_type inverse(bool omit = true) const {
       matrix_type inverse(n,m);
       if(rank()> 0) {
          vector_type reciprocalS(s.size());

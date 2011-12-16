@@ -26,7 +26,6 @@
 		1E9F91C80FB1D32A00F8AC18 /* libublasJama.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libublasJama.a */; };
 		1EBDAB9E0FB09C8B00B91217 /* CholeskyDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB940FB09C8B00B91217 /* CholeskyDecomposition.cpp */; };
 		1EBDAB9F0FB09C8B00B91217 /* CholeskyDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB950FB09C8B00B91217 /* CholeskyDecomposition.hpp */; };
-		1EBDABA00FB09C8B00B91217 /* EigenvalueDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB960FB09C8B00B91217 /* EigenvalueDecomposition.cpp */; };
 		1EBDABA10FB09C8B00B91217 /* EigenvalueDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB970FB09C8B00B91217 /* EigenvalueDecomposition.hpp */; };
 		1EBDABA20FB09C8B00B91217 /* LUDecomposition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDAB980FB09C8B00B91217 /* LUDecomposition.cpp */; };
 		1EBDABA30FB09C8B00B91217 /* LUDecomposition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1EBDAB990FB09C8B00B91217 /* LUDecomposition.hpp */; };
@@ -79,7 +78,6 @@
 /* Begin PBXFileReference section */
 		1EBDAB940FB09C8B00B91217 /* CholeskyDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CholeskyDecomposition.cpp; sourceTree = "<group>"; };
 		1EBDAB950FB09C8B00B91217 /* CholeskyDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CholeskyDecomposition.hpp; sourceTree = "<group>"; };
-		1EBDAB960FB09C8B00B91217 /* EigenvalueDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EigenvalueDecomposition.cpp; sourceTree = "<group>"; };
 		1EBDAB970FB09C8B00B91217 /* EigenvalueDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EigenvalueDecomposition.hpp; sourceTree = "<group>"; };
 		1EBDAB980FB09C8B00B91217 /* LUDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LUDecomposition.cpp; sourceTree = "<group>"; };
 		1EBDAB990FB09C8B00B91217 /* LUDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LUDecomposition.hpp; sourceTree = "<group>"; };
@@ -137,7 +135,6 @@
 				1EBDABB90FB09D4200B91217 /* examples */,
 				1EBDAB940FB09C8B00B91217 /* CholeskyDecomposition.cpp */,
 				1EBDAB950FB09C8B00B91217 /* CholeskyDecomposition.hpp */,
-				1EBDAB960FB09C8B00B91217 /* EigenvalueDecomposition.cpp */,
 				1EBDAB970FB09C8B00B91217 /* EigenvalueDecomposition.hpp */,
 				1EBDAB980FB09C8B00B91217 /* LUDecomposition.cpp */,
 				1EBDAB990FB09C8B00B91217 /* LUDecomposition.hpp */,
@@ -302,7 +299,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1EBDAB9E0FB09C8B00B91217 /* CholeskyDecomposition.cpp in Sources */,
-				1EBDABA00FB09C8B00B91217 /* EigenvalueDecomposition.cpp in Sources */,
 				1EBDABA20FB09C8B00B91217 /* LUDecomposition.cpp in Sources */,
 				1EBDABA40FB09C8B00B91217 /* QRDecomposition.cpp in Sources */,
 			);

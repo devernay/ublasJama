@@ -22,6 +22,7 @@ using std::fixed;
 using std::endl;
 
 typedef matrix<double> Matrix;
+typedef symmetric_matrix<double> SymmetricMatrix;
 typedef identity_matrix<double> IdentityMatrix;
 typedef scalar_matrix<double> ScalarMatrix;
 typedef vector<double> Vector;
@@ -146,7 +147,7 @@ int main (int argc, char **argv) {
          int t = (int) trace(M);
          print(fixedWidthIntegertoString(t,10));
 
-         EigenvalueDecomposition E(0.5*(M+trans(M)));
+         EigenvalueDecomposition<double> E(SymmetricMatrix(0.5*(M+trans(M))));
          Vector d = E.getRealEigenvalues();
          print(fixedWidthDoubletoString(d(n-1),14,3));
 

@@ -39,7 +39,6 @@ lib: $(LIBRARY)
 
 ublasJama_SOURCES_CPP = \
 	CholeskyDecomposition.cpp \
-	EigenvalueDecomposition.cpp \
 	LUDecomposition.cpp \
 	QRDecomposition.cpp
 

@@ -40,6 +40,7 @@ using std::setprecision;
 using std::fixed;
 
 typedef matrix<double> Matrix;
+typedef symmetric_matrix<double> SymmetricMatrix;
 typedef identity_matrix<double> IdentityMatrix;
 typedef scalar_matrix<double> ScalarMatrix;
 typedef vector<double> Vector;
@@ -358,7 +359,7 @@ int main (int argc, char **argv) {
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"CholeskyDecomposition solve()...","incorrect Choleskydecomposition solve calculation");
       }
-      EigenvalueDecomposition Eig(A);
+      EigenvalueDecomposition<double> Eig(A);
       Matrix D = Eig.getD();
       Matrix V = Eig.getV();
       try {
@@ -373,7 +374,7 @@ int main (int argc, char **argv) {
             A(i,j) = evals[i][j];
          }
       }
-      Eig = EigenvalueDecomposition(A);
+      Eig = EigenvalueDecomposition<double>(A);
       D = Eig.getD();
       V = Eig.getV();
       try {
@@ -397,7 +398,11 @@ int main (int argc, char **argv) {
                       AR(j,i) = value;
                   }
               }
-              Eig = EigenvalueDecomposition(AR);
+              Eig = EigenvalueDecomposition<double>(AR);
+              D = Eig.getD();
+              V = Eig.getV();
+              check(prod(AR,V),prod(V,D));
+              Eig = EigenvalueDecomposition<double>(SymmetricMatrix(AR));
               D = Eig.getD();
               V = Eig.getV();
               check(prod(AR,V),prod(V,D));
@@ -420,7 +425,7 @@ int main (int argc, char **argv) {
                       AR(i,j) = value;
                   }
               }
-              Eig = EigenvalueDecomposition(AR);
+              Eig = EigenvalueDecomposition<double>(AR);
               D = Eig.getD();
               V = Eig.getV();
               check(prod(AR,V),prod(V,D));
@@ -452,7 +457,7 @@ int main (int argc, char **argv) {
                   A(i,j) = eigenbug1[i][j];
               }
           }
-          Eig = EigenvalueDecomposition(A);
+          Eig = EigenvalueDecomposition<double>(A);
           Vector d = Eig.getRealEigenvalues();
           Vector e = Eig.getImagEigenvalues();
           double eps = 0.0032;
@@ -480,7 +485,7 @@ int main (int argc, char **argv) {
                   A(i,j) = eigenbug2[i][j];
               }
           }
-          Eig = EigenvalueDecomposition(A);
+          Eig = EigenvalueDecomposition<double>(A);
           D = Eig.getD();
           V = Eig.getV();
           check(prod(A,V),prod(V,D));
