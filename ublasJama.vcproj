@@ -153,10 +153,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\EigenvalueDecomposition.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\LUDecomposition.cpp"
 				>
 			</File>
