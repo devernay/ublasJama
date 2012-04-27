@@ -360,7 +360,6 @@
 				HEADER_SEARCH_PATHS = "$(BOOST_PATH)";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = ublasJama;
-				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -375,7 +374,6 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				HEADER_SEARCH_PATHS = "$(BOOST_PATH)";
 				PRODUCT_NAME = ublasJama;
-				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
