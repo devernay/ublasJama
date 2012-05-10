@@ -362,8 +362,17 @@ int main (int argc, char **argv) {
       EigenvalueDecomposition<double> Eig(A);
       Matrix D = Eig.getD();
       Matrix V = Eig.getV();
+      Vector Re = Eig.getRealEigenvalues();
       try {
+         if (!Eig.isSymmetric()) {
+            throw internal_logic("A is not symmetric");
+         }
          check(prod(A,V),prod(V,D));
+         for(unsigned i=0; i<Re.size()-1; i++) {
+            if (Re(i) > Re(i+1)) {
+               throw internal_logic("Eigenvalues are not in ascending order");
+            }
+         }
          try_success("EigenvalueDecomposition (symmetric)...","");
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"EigenvalueDecomposition (symmetric)...","incorrect symmetric Eigenvalue decomposition calculation");
@@ -377,8 +386,22 @@ int main (int argc, char **argv) {
       Eig = EigenvalueDecomposition<double>(A);
       D = Eig.getD();
       V = Eig.getV();
+      Re = Eig.getRealEigenvalues();
+      Vector Im = Eig.getImagEigenvalues();
       try {
+         if (Eig.isSymmetric()) {
+            throw internal_logic("A is symmetric");
+         }
          check(prod(A,V),prod(V,D));
+         for(unsigned i=0; i<Im.size(); i++) {
+            if (Im(i) != 0.) {
+                if (i == Im.size() -1 || Re(i) != Re(i+1) || Im(i) < 0. || Im(i) != -Im(i+1)) {         
+                    throw internal_logic("Conjugate eigenvalues are not in the right order");
+                }
+               ++i; // skip next value
+            }
+            
+         }
          try_success("EigenvalueDecomposition (nonsymmetric)...","");
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"EigenvalueDecomposition (nonsymmetric)...","incorrect nonsymmetric Eigenvalue decomposition calculation");

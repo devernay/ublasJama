@@ -150,6 +150,10 @@ public:
    }
 
    /** Return the real parts of the eigenvalues
+       If A is symmetric, the eigenvalues are in ascending order.
+       If A is not symmetric, the eigenvalues are unordered except that
+       complex conjugate pairs of values appear consecutively with the
+       eigenvalue having the positive imaginary part first.
    @return     real(diag(D))
    */
 
@@ -158,6 +162,9 @@ public:
    }
 
    /** Return the imaginary parts of the eigenvalues
+       If A is not symmetric, the eigenvalues are unordered except that
+       complex conjugate pairs of values appear consecutively with the
+       eigenvalue having the positive imaginary part first.
    @return     imag(diag(D))
    */
 
