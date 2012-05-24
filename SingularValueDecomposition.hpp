@@ -31,11 +31,11 @@
 
 namespace boost { namespace numeric { namespace ublas {
             
-template<class T>
+template<class T, class L = row_major>
 class SingularValueDecomposition {
 
     typedef vector<T> vector_type;
-    typedef matrix<T> matrix_type;
+    typedef matrix<T,L> matrix_type;
 
 /* ------------------------
    Class variables
@@ -231,8 +231,8 @@ public:
 
 };
 
-template<class T>
-void SingularValueDecomposition<T>::init (const matrix_type &Arg, bool thin, bool wantu, bool wantv) {
+template<class T, class L>
+void SingularValueDecomposition<T,L>::init (const matrix_type &Arg, bool thin, bool wantu, bool wantv) {
 
    // Derived from LINPACK code.
    // Initialize.

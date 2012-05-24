@@ -55,13 +55,13 @@
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 
 namespace boost { namespace numeric { namespace ublas {
-    
-template<class T>
+// T: type, TRI: type of triangular matrix (lower/upper), L: layout (row_major/column_major)
+template<class T, class TRI = lower, class L = row_major>
 class EigenvalueDecomposition {
 
     typedef vector<T> Vector;
-    typedef matrix<T> Matrix;
-    typedef symmetric_matrix<T> SymmetricMatrix;
+    typedef matrix<T,L> Matrix;
+    typedef symmetric_matrix<T,TRI,L> SymmetricMatrix;
 
 /* ------------------------
    Class variables
@@ -208,8 +208,8 @@ public:
 
    // Symmetric Householder reduction to tridiagonal form.
 
-template<class T>
-void EigenvalueDecomposition<T>::tred2 () {
+template<class T, class TRI, class L>
+void EigenvalueDecomposition<T,TRI,L>::tred2 () {
 
    //  This is derived from the Algol procedures tred2 by
    //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -326,8 +326,8 @@ void EigenvalueDecomposition<T>::tred2 () {
 
    // Symmetric tridiagonal QL algorithm.
    
-template<class T>
-void EigenvalueDecomposition<T>::tql2 () {
+template<class T, class TRI, class L>
+void EigenvalueDecomposition<T,TRI,L>::tql2 () {
 
    //  This is derived from the Algol procedures tql2, by
    //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -447,8 +447,8 @@ void EigenvalueDecomposition<T>::tql2 () {
 
    // Nonsymmetric reduction to Hessenberg form.
 
-template<class T>
-void EigenvalueDecomposition<T>::orthes () {
+template<class T, class TRI, class L>
+void EigenvalueDecomposition<T,TRI,L>::orthes () {
    
       //  This is derived from the Algol procedures orthes and ortran,
       //  by Martin and Wilkinson, Handbook for Auto. Comp.,
@@ -543,8 +543,8 @@ void EigenvalueDecomposition<T>::orthes () {
 
    // Nonsymmetric reduction from Hessenberg to real Schur form.
 
-template<class T>
-void EigenvalueDecomposition<T>::hqr2 () {
+template<class T, class TRI, class L>
+void EigenvalueDecomposition<T,TRI,L>::hqr2 () {
    
       //  This is derived from the Algol procedure hqr2,
       //  by Martin and Wilkinson, Handbook for Auto. Comp.,
@@ -1003,8 +1003,8 @@ void EigenvalueDecomposition<T>::hqr2 () {
    @return     Structure to access D and V.
    */
 
-template<class T>
-EigenvalueDecomposition<T>::EigenvalueDecomposition (const Matrix& A) {
+template<class T, class TRI, class L>
+EigenvalueDecomposition<T,TRI,L>::EigenvalueDecomposition (const Matrix& A) {
       BOOST_UBLAS_CHECK(A.size1() == A.size2(), bad_size());
       n = A.size2();
       V.resize(n,n,false);
@@ -1046,8 +1046,8 @@ EigenvalueDecomposition<T>::EigenvalueDecomposition (const Matrix& A) {
       }
    }
 
-template<class T>
-EigenvalueDecomposition<T>::EigenvalueDecomposition (const SymmetricMatrix& A) {
+template<class T, class TRI, class L>
+EigenvalueDecomposition<T,TRI,L>::EigenvalueDecomposition (const SymmetricMatrix& A) {
       BOOST_UBLAS_CHECK(A.size1() == A.size2(), bad_size());
       n = A.size2();
       V.resize(n,n,false);
@@ -1101,8 +1101,8 @@ EigenvalueDecomposition<T>::EigenvalueDecomposition (const SymmetricMatrix& A) {
 	
 */
 
-template<class T>
-void EigenvalueDecomposition<T>::getD (Matrix &D) const {
+template<class T, class TRI, class L>
+void EigenvalueDecomposition<T,TRI,L>::getD (Matrix &D) const {
       D.resize(n,n,false);
       D.clear();
       for (int i = 0; i < n; ++i) {
