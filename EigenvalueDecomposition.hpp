@@ -56,12 +56,11 @@
 
 namespace boost { namespace numeric { namespace ublas {
 // T: type, TRI: type of triangular matrix (lower/upper), L: layout (row_major/column_major)
-template<class T, class TRI = lower, class L = row_major>
+template<class T, class L = row_major>
 class EigenvalueDecomposition {
 
     typedef vector<T> Vector;
     typedef matrix<T,L> Matrix;
-    typedef symmetric_matrix<T,TRI,L> SymmetricMatrix;
 
 /* ------------------------
    Class variables
@@ -127,8 +126,11 @@ public:
    @return     Structure to access D and V.
    */
 
-   EigenvalueDecomposition (const Matrix& A);
-   EigenvalueDecomposition (const SymmetricMatrix& A);
+   template <class E>
+   EigenvalueDecomposition (const matrix_expression<E>& A);
+   
+   template <class TRI>
+   EigenvalueDecomposition (const symmetric_matrix<T,TRI,L>& A);
 
 /* ------------------------
    Public Methods
@@ -208,8 +210,8 @@ public:
 
    // Symmetric Householder reduction to tridiagonal form.
 
-template<class T, class TRI, class L>
-void EigenvalueDecomposition<T,TRI,L>::tred2 () {
+template<class T, class L>
+void EigenvalueDecomposition<T,L>::tred2 () {
 
    //  This is derived from the Algol procedures tred2 by
    //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -326,8 +328,8 @@ void EigenvalueDecomposition<T,TRI,L>::tred2 () {
 
    // Symmetric tridiagonal QL algorithm.
    
-template<class T, class TRI, class L>
-void EigenvalueDecomposition<T,TRI,L>::tql2 () {
+template<class T, class L>
+void EigenvalueDecomposition<T,L>::tql2 () {
 
    //  This is derived from the Algol procedures tql2, by
    //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -447,8 +449,8 @@ void EigenvalueDecomposition<T,TRI,L>::tql2 () {
 
    // Nonsymmetric reduction to Hessenberg form.
 
-template<class T, class TRI, class L>
-void EigenvalueDecomposition<T,TRI,L>::orthes () {
+template<class T, class L>
+void EigenvalueDecomposition<T,L>::orthes () {
    
       //  This is derived from the Algol procedures orthes and ortran,
       //  by Martin and Wilkinson, Handbook for Auto. Comp.,
@@ -543,8 +545,8 @@ void EigenvalueDecomposition<T,TRI,L>::orthes () {
 
    // Nonsymmetric reduction from Hessenberg to real Schur form.
 
-template<class T, class TRI, class L>
-void EigenvalueDecomposition<T,TRI,L>::hqr2 () {
+template<class T, class L>
+void EigenvalueDecomposition<T,L>::hqr2 () {
    
       //  This is derived from the Algol procedure hqr2,
       //  by Martin and Wilkinson, Handbook for Auto. Comp.,
@@ -1003,10 +1005,10 @@ void EigenvalueDecomposition<T,TRI,L>::hqr2 () {
    @return     Structure to access D and V.
    */
 
-template<class T, class TRI, class L>
-EigenvalueDecomposition<T,TRI,L>::EigenvalueDecomposition (const Matrix& A) {
-      BOOST_UBLAS_CHECK(A.size1() == A.size2(), bad_size());
-      n = A.size2();
+template<class T, class L> template <class E>
+EigenvalueDecomposition<T,L>::EigenvalueDecomposition (const matrix_expression<E>& A) {
+      BOOST_UBLAS_CHECK(A().size1() == A().size2(), bad_size());
+      n = A().size2();
       V.resize(n,n,false);
       d.resize(n,false);
       e.resize(n,false);
@@ -1017,10 +1019,10 @@ EigenvalueDecomposition<T,TRI,L>::EigenvalueDecomposition (const Matrix& A) {
       //      issymmetric = (A(i,j) == A(j,i));
       //   }
       //}
-      issymmetric = boost::numeric::ublas::is_symmetric(A);
+      issymmetric = boost::numeric::ublas::is_symmetric(A());
 
       if (issymmetric) {
-         V = A;
+         V = A();
    
          // Tridiagonalize.
          tred2();
@@ -1029,14 +1031,10 @@ EigenvalueDecomposition<T,TRI,L>::EigenvalueDecomposition (const Matrix& A) {
          tql2();
 
       } else {
-         H.resize(n,n,false);
+         //H.resize(n,n,false);
          ort.resize(n,false);
          
-         for (int j = 0; j < n; ++j) {
-            for (int i = 0; i < n; ++i) {
-               H(i,j) = A(i,j);
-            }
-         }
+         H = A();
    
          // Reduce to Hessenberg form.
          orthes();
@@ -1046,8 +1044,8 @@ EigenvalueDecomposition<T,TRI,L>::EigenvalueDecomposition (const Matrix& A) {
       }
    }
 
-template<class T, class TRI, class L>
-EigenvalueDecomposition<T,TRI,L>::EigenvalueDecomposition (const SymmetricMatrix& A) {
+template<class T, class L> template <class TRI>
+EigenvalueDecomposition<T,L>::EigenvalueDecomposition (const symmetric_matrix<T,TRI,L>& A) {
       BOOST_UBLAS_CHECK(A.size1() == A.size2(), bad_size());
       n = A.size2();
       V.resize(n,n,false);
@@ -1101,8 +1099,8 @@ EigenvalueDecomposition<T,TRI,L>::EigenvalueDecomposition (const SymmetricMatrix
 	
 */
 
-template<class T, class TRI, class L>
-void EigenvalueDecomposition<T,TRI,L>::getD (Matrix &D) const {
+template<class T, class L>
+void EigenvalueDecomposition<T,L>::getD (Matrix &D) const {
       D.resize(n,n,false);
       D.clear();
       for (int i = 0; i < n; ++i) {

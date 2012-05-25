@@ -72,7 +72,8 @@ class SingularValueDecomposition {
    @param wantv If true generate the V matrix
    @return     Structure to access U, S and V.
    */
-   void init (const matrix_type &Arg, bool thin, bool wantu, bool wantv);
+   template <class E>
+   void init (const matrix_expression<E> &Arg, bool thin, bool wantu, bool wantv);
 
    static matrix_vector_slice<matrix_type> subcolumn(matrix_type& M,size_t c,size_t start,size_t stop) {
       return matrix_vector_slice<matrix_type> (M, slice(start,1,stop-start), slice(c,0,stop-start));
@@ -90,7 +91,8 @@ public:
    @return     Structure to access U, S and V.
    */
    
-   SingularValueDecomposition (const matrix_type &Arg) {
+   template <class E>
+   SingularValueDecomposition (const matrix_expression<E> &Arg) {
       init(Arg,true,true,true);
    }
    
@@ -231,14 +233,14 @@ public:
 
 };
 
-template<class T, class L>
-void SingularValueDecomposition<T,L>::init (const matrix_type &Arg, bool thin, bool wantu, bool wantv) {
+template<class T, class L> template<class E>
+void SingularValueDecomposition<T,L>::init (const matrix_expression<E> &Arg, bool thin, bool wantu, bool wantv) {
 
    // Derived from LINPACK code.
    // Initialize.
-   matrix_type A = Arg;
-   m = Arg.size1();
-   n = Arg.size2();
+   matrix_type A = Arg();
+   m = A.size1();
+   n = A.size2();
    this->thin = thin;
 
    ncu = thin?std::min(m,n):m;
