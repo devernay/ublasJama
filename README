@@ -23,6 +23,7 @@ There are two test programs:
 
 Changes since ublasJama 1.0.2.3:
 - templatize EigenValueDecomposition
+- better template parameters (allow row_major and column_major matrices)
 
 Changes since ublasJama 1.0.2.2:
 - from http://ojalgo.org/generated/org/ojalgo/matrix/jama/package-summary.html:
