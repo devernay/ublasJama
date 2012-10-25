@@ -542,7 +542,7 @@ int main (int argc, char **argv) {
          double P[3][4] = {{-6.12323e-17,-6.12323e-17,1,6.12323e-17},
                            {-1,-1.22465e-16,-6.12323e-17,1},
                            {1.22465e-16,-1,-6.12323e-17,-1.22465e-16}};
-          Matrix Pl(3,4);
+          bounded_matrix<double, 3, 4> Pl;
           for(unsigned i=0; i<Pl.size1(); i++) {
               for(unsigned j=0; j<Pl.size2(); j++) {
                   Pl(i,j) = P[i][j];
@@ -562,7 +562,7 @@ int main (int argc, char **argv) {
          double P[3][4] = {{-6.12323e-17,-6.12323e-17,1,6.12323e-17},
                            {-1,-1.22465e-16,-6.12323e-17,1},
                            {1.22465e-16,-1,-6.12323e-17,-1.22465e-16}};
-          matrix<double,column_major> Pl(3,4);
+          bounded_matrix<double, 3, 4> Pl;
           for(unsigned i=0; i<Pl.size1(); i++) {
               for(unsigned j=0; j<Pl.size2(); j++) {
                   Pl(i,j) = P[i][j];
