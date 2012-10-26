@@ -537,46 +537,28 @@ int main (int argc, char **argv) {
       } catch ( std::exception e ) {
          errorCount = try_failure(errorCount,"EigenvalueDecomposition(special2)...","incorrect nonsymmetric Eigenvalue decomposition calculation");
       }
-      try {
-         // GCC 4.6.3 bug on x86_64 with -Ofast -DNDEBUG
-         double P[3][4] = {{-6.12323e-17,-6.12323e-17,1,6.12323e-17},
-                           {-1,-1.22465e-16,-6.12323e-17,1},
-                           {1.22465e-16,-1,-6.12323e-17,-1.22465e-16}};
-          bounded_matrix<double, 3, 4> Pl;
-          for(unsigned i=0; i<Pl.size1(); i++) {
-              for(unsigned j=0; j<Pl.size2(); j++) {
-                  Pl(i,j) = P[i][j];
-              }
-          }
-          Matrix AtA = prod(trans(Pl),Pl);
-          EigenvalueDecomposition<double> Eigl(AtA);
-          D = Eigl.getD();
-          V = Eigl.getV();
-          check(prod(AtA,V),prod(V,D));
-          try_success("EigenvalueDecomposition(special3)...","");
-      } catch ( std::exception e ) {
-          errorCount = try_failure(errorCount,"EigenvalueDecomposition(special3)...","incorrect nonsymmetric Eigenvalue decomposition calculation");
-      }
-      try {
-         // GCC 4.6.3 bug on x86_64 with -Ofast -DNDEBUG
-         double P[3][4] = {{-6.12323e-17,-6.12323e-17,1,6.12323e-17},
-                           {-1,-1.22465e-16,-6.12323e-17,1},
-                           {1.22465e-16,-1,-6.12323e-17,-1.22465e-16}};
-          bounded_matrix<double, 3, 4> Pl;
-          for(unsigned i=0; i<Pl.size1(); i++) {
-              for(unsigned j=0; j<Pl.size2(); j++) {
-                  Pl(i,j) = P[i][j];
-              }
-          }
-          matrix<double, column_major> AtA = prod(trans(Pl),Pl);
-          EigenvalueDecomposition<double,column_major> Eigl(AtA);
-          D = Eigl.getD();
-          V = Eigl.getV();
-          check(prod(AtA,V),prod(V,D));
-          try_success("EigenvalueDecomposition(special4)...","");
-      } catch ( std::exception e ) {
-          errorCount = try_failure(errorCount,"EigenvalueDecomposition(special4)...","incorrect nonsymmetric Eigenvalue decomposition calculation");
-      }
+    try {
+        // this matrix is almost non-symmetric, so force it to be non-symmetric
+        double eigenbug3[4][4] = {{1,0,-7.49881e-33,-1},
+                                  {3.74939e-33,1,1.2326e-32,-3.74939e-33},
+                                  {-7.49881e-33,1.2326e-32,1,7.49881e-33},
+                                  {-1,-3.74939e-33,1.2326e-32,1}};
+        A.resize(4,4);
+        for(unsigned i=0; i<A.size1(); i++) {
+            for(unsigned j=0; j<A.size2(); j++) {
+                A(i,j) = eigenbug3[i][j];
+            }
+        }
+        Eig = EigenvalueDecomposition<double>(A,true);
+        Vector d = Eig.getRealEigenvalues();
+        Vector e = Eig.getImagEigenvalues();
+        double eps = 1e-15;
+        check_lessthan(fabs(d(0)), eps);
+        check_lessthan(fabs(e(0)), eps);
+        try_success("EigenvalueDecomposition(special3)...","");
+    } catch ( std::exception e ) {
+        errorCount = try_failure(errorCount,"EigenvalueDecomposition(special3)...","incorrect nonsymmetric Eigenvalue decomposition calculation");
+    }
       cout << "\nTestMatrix completed.\n";
       cout << "Total errors reported: " << errorCount << "\n";
       cout << "Total warnings reported: " << warningCount << "\n";

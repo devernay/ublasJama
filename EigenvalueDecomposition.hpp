@@ -123,11 +123,12 @@ public:
 
    /** Check for symmetry, then construct the eigenvalue decomposition
    @param A    Square matrix
+   @param force_symmetric If true, A is considered symmetric and only the upper triangular par of A is used
    @return     Structure to access D and V.
    */
 
    template <class E>
-   EigenvalueDecomposition (const matrix_expression<E>& A);
+   EigenvalueDecomposition (const matrix_expression<E>& A, bool force_symmetric = false);
    
    template <class TRI>
    EigenvalueDecomposition (const symmetric_matrix<T,TRI,L>& A);
@@ -1006,7 +1007,7 @@ void EigenvalueDecomposition<T,L>::hqr2 () {
    */
 
 template<class T, class L> template <class E>
-EigenvalueDecomposition<T,L>::EigenvalueDecomposition (const matrix_expression<E>& A) {
+EigenvalueDecomposition<T,L>::EigenvalueDecomposition (const matrix_expression<E>& A, bool force_symmetric) {
       BOOST_UBLAS_CHECK(A().size1() == A().size2(), bad_size());
       n = A().size2();
       V.resize(n,n,false);
@@ -1019,7 +1020,7 @@ EigenvalueDecomposition<T,L>::EigenvalueDecomposition (const matrix_expression<E
       //      issymmetric = (A(i,j) == A(j,i));
       //   }
       //}
-      issymmetric = boost::numeric::ublas::is_symmetric(A());
+      issymmetric = force_symmetric || boost::numeric::ublas::is_symmetric(A());
 
       if (issymmetric) {
          V = A();
