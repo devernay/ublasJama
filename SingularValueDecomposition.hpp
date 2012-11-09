@@ -13,8 +13,10 @@
    */
 
 // This version includes modifications and fixes by Andreas Kyrmegalos
-// explanation: http://cio.nist.gov/esd/emaildir/lists/jama/msg01430.html
-// final version: http://cio.nist.gov/esd/emaildir/lists/jama/msg01431.html
+// explanation: http://cio.nist.gov/esd/emaildir/lists/jama/msg00728.html
+//           or http://cio.nist.gov/esd/emaildir/lists/jama/msg01430.html
+// final version: http://cio.nist.gov/esd/emaildir/lists/jama/msg00729.html
+//             or http://cio.nist.gov/esd/emaildir/lists/jama/msg01431.html
 
 #ifndef _BOOST_UBLAS_SINGULARVALUEDECOMPOSITION_
 #define _BOOST_UBLAS_SINGULARVALUEDECOMPOSITION_

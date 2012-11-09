@@ -1,4 +1,58 @@
-add to ublasJama the following fnctionality from eigen2, which is another C++ port of Jama:
+** fix the following? probably not necessary because this is dead code anyway.
+
+http://cio.nist.gov/esd/emaildir/lists/jama/msg00833.html
+
+-----Original Message-----
+From: jama@nist.gov [mailto:jama@nist.gov] On Behalf Of Tobias Weimer
+Sent: Tuesday, November 06, 2012 11:51 AM
+To: Multiple recipients of list
+Subject: Unreachable Code?
+
+Hi,
+I have a question about the code in EigenvalueDecomposition.java, method
+hqr2():
+>       int nn = this.n;
+>       int n = nn-1;
+>       int low = 0;
+>       int high = nn-1;
+>       double eps = Math.pow(2.0,-52.0);
+>       double exshift = 0.0;
+>       double p=0,q=0,r=0,s=0,z=0,t,w,x,y;
+>
+>       // Store roots isolated by balanc and compute matrix norm
+>
+>       double norm = 0.0;
+>       for (int i = 0; i < nn; i++) {
+>          if (i < low | i > high) {
+>             d[i] = H[i][i];
+>             e[i] = 0.0;
+>          }
+>          for (int j = Math.max(i-1,0); j < nn; j++) {
+>             norm = norm + Math.abs(H[i][j]);
+>          }
+>       }
+
+What is the point of
+> if (i < low | i > high)
+
+The condition always evaluates to false, as per the loop invariant.
+What did the code originally intend to do? Can someone enlighten me?
+
+Regards
+Tobias Weimer
+-----
+Sender: Cleve Moler <Cleve.Moler@mathworks.com>
+Subject: RE: Unreachable Code?
+
+
+Good question.  The Java code tries to be a faithful translation of the 1970 Algol code referenced in
+the comment at the beginning of hqr2 (except it's by Peters and Wilkinson, not Martin and Wilkinson).
+The Algol allowed for the possibility of "balancing", which might produce input parameters low and high (upp in the Algol) that are not 0 and n-1.  We don't have balancing in Jama and so low and high are
+these superfluous variables instead of input parameters.
+   -- Cleve Moler
+
+
+** add to ublasJama the following fnctionality from eigen2, which is another C++ port of Jama:
 
 #if 0
 // code from eigen2 http://websvn.kde.org/trunk/kdesupport/eigen2 http://eigen.tuxfamily.org/
