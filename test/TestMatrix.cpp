@@ -516,8 +516,11 @@ int main (int argc, char **argv) {
           errorCount = try_failure(errorCount,"EigenvalueDecomposition(special1)...","incorrect nonsymmetric Eigenvalue decomposition calculation");
       }
       try {
-          // Bug from http://cio.nist.gov/esd/emaildir/lists/jama/msg01525.html :
+          // Bug report by Creag Winacott
+          // from http://cio.nist.gov/esd/emaildir/lists/jama/msg00551.html
+          //  (or http://cio.nist.gov/esd/emaildir/lists/jama/msg01525.html):
           // eigenvalue decomposition gets stuck! fixed in ublasJama 1.0.2.3.
+          // see explanation in README-Eigenbug.txt
           double eigenbug2[5][5] = {{0., 0., 0., 0., 0.},
                                     {0., 0., 0., 0., 1.},
                                     {0., 0., 0., 1., 0.},

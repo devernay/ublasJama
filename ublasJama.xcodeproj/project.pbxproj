@@ -76,6 +76,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E1DD89D164D3EA70056DAD3 /* ChangeLog-Jama */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ChangeLog-Jama"; sourceTree = "<group>"; };
+		1E1DD89E164D3EA70056DAD3 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		1E1DD89F164D3EA70056DAD3 /* README-Eigenbug.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "README-Eigenbug.txt"; sourceTree = "<group>"; };
+		1E1DD8A0164D3EA70056DAD3 /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		1EBDAB940FB09C8B00B91217 /* CholeskyDecomposition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CholeskyDecomposition.cpp; sourceTree = "<group>"; };
 		1EBDAB950FB09C8B00B91217 /* CholeskyDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CholeskyDecomposition.hpp; sourceTree = "<group>"; };
 		1EBDAB970FB09C8B00B91217 /* EigenvalueDecomposition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EigenvalueDecomposition.hpp; sourceTree = "<group>"; };
@@ -174,6 +178,10 @@
 		C6A0FF2B0290797F04C91782 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
+				1E1DD89D164D3EA70056DAD3 /* ChangeLog-Jama */,
+				1E1DD89E164D3EA70056DAD3 /* README */,
+				1E1DD89F164D3EA70056DAD3 /* README-Eigenbug.txt */,
+				1E1DD8A0164D3EA70056DAD3 /* TODO */,
 			);
 			name = Documentation;
 			sourceTree = "<group>";

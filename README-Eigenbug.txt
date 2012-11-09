@@ -1,4 +1,30 @@
-I found Creag's bug declaration at http://cio.nist.gov/esd/emaildir/lists/jama/msg01525.html , and indeed Jama gets stuck, as well as my C++ port of Jama (ublasJama).
+I found Creag Winacott's bug declaration at http://cio.nist.gov/esd/emaildir/lists/jama/msg00551.html
+(or http://cio.nist.gov/esd/emaildir/lists/jama/msg01525.html):
+-----Original Message-----
+From: jama@nist.gov [mailto:jama@nist.gov] On Behalf Of creag@cs.queensu.ca
+Sent: Wednesday, August 11, 2010 8:48 PM
+To: Multiple recipients of list
+Subject: JAMA bug possibly
+
+Greetings,
+
+I have been using JAMA's EigenvalueDecomposition function to analyze the
+transition matrices of every binary 5-state automata and I noticed that it
+seems to get stuck on this one for some reason:
+
+[0 0 0 0 0]
+[0 0 0 0 1]
+[0 0 0 1 0]
+[1 1 0 0 1]
+[1 0 1 0 1]
+
+Not a huge problem for me, just thought you might like to know.
+
+Best regards,
+Creag Winacott
+-----Original Message-----
+
+And indeed Jama gets stuck, as well as my C++ port of Jama (ublasJama).
 
 Looking at where it got stuck, I found out that hqr2 was the problem, so I checked carefully the jama code against the EISPACK code http://www.netlib.org/eispack/hqr2.f
 
