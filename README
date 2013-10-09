@@ -6,6 +6,7 @@ http://web.archive.org/web/20130915073759/http://math.nist.gov/javanumerics/jama
 1.0.2 to C++ using boost.ublas for the linear algebra.
 
 Author of the ublas translation: Frederic Devernay <frederic.devernay@m4x.org>
+Homepage: http://devernay.free.fr/hacks/ublasJama/
 
 Documentation: see the Jama documentation
 http://math.nist.gov/javanumerics/jama/doc/ or
