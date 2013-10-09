@@ -68,7 +68,8 @@ class SingularValueDecomposition {
    bool thin;
    
    /** Construct the singular value decomposition
-   @param A    Rectangular matrix
+       Structure to access U, S and V.
+   @param Arg    Rectangular matrix
    @param thin  If true U is economy sized
    @param wantu If true generate the U matrix
    @param wantv If true generate the V matrix

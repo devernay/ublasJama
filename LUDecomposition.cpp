@@ -23,8 +23,8 @@ namespace boost { namespace numeric { namespace ublas {
  * ------------------------ */
 
    /** LU Decomposition
-   @param  A   Rectangular matrix
-   @return     Structure to access L, U and piv.
+       Structure to access L, U and piv.
+   @param  A Rectangular matrix
    */
 
 LUDecomposition::LUDecomposition (const Matrix& A) {

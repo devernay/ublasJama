@@ -48,8 +48,8 @@ public:
  * ------------------------ */
 
    /** Cholesky algorithm for symmetric and positive definite matrix.
-   @param  A   Square, symmetric matrix.
-   @return     Structure to access L and isspd flag.
+       Structure to access L and isspd flag.
+   @param  Arg   Square, symmetric matrix.
    */
 
    CholeskyDecomposition (const Matrix& A);

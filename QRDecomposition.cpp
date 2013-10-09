@@ -36,6 +36,15 @@ namespace boost { namespace numeric { namespace ublas {
    */
     
     
+/* ------------------------
+   Constructor
+ * ------------------------ */
+
+   /** QR Decomposition, computed by Householder reflections.
+       Structure to access R and the Householder vectors and compute Q.
+   @param A    Rectangular matrix
+   */
+
 QRDecomposition::QRDecomposition (const Matrix &A) {
       // Initialize.
       QR = A;
@@ -76,6 +85,11 @@ QRDecomposition::QRDecomposition (const Matrix &A) {
          Rdiag[k] = -nrm;
       }
    }
+
+/* ------------------------
+   Public Methods
+ * ------------------------ */
+
    /** Is the matrix full rank?
    @return     true if R, and hence A, has full rank.
    */

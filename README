@@ -1,9 +1,9 @@
-This is ublasJama 1.0.2.5, based on Jama 1.0.2
+This is ublasJama 1.0.3.0, based on Jama 1.0.3
 
 ublasJama is translation of the public domain Jama (Java Matrix
 Package http://math.nist.gov/javanumerics/jama/ or
 http://web.archive.org/web/20130915073759/http://math.nist.gov/javanumerics/jama/)
-1.0.2 to C++ using boost.ublas for the linear algebra.
+1.0.3 to C++ using boost.ublas for the linear algebra.
 
 Author of the ublas translation: Frederic Devernay <frederic.devernay@m4x.org>
 Homepage: http://devernay.free.fr/hacks/ublasJama/
@@ -24,6 +24,10 @@ No optimization of the original code was done, but the functionality is here:
 There are two test programs:
 - TestMatrix, in subdirectory test  - the original Jama tests, where only the relevant tests were kept.
 - MagicSquareExample, in subdirectory examples
+
+Changes since ublasJama 1.0.3.0:
+- rebase on Jama 1.0.3, which incorporates my fix for EigenvalueDecomposition (see below)
+- cleaned up javadoc documentation
 
 Changes since ublasJama 1.0.2.4:
 - add force_symmetric parameter to Eigenvalue decomposition, to force decomposition type

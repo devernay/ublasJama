@@ -760,6 +760,7 @@ void EigenvalueDecomposition<T,L>::hqr2 () {
    
             // Double QR step involving rows l:n and columns m:n
    
+
             for (int k = m; k <= n-1; ++k) {
                bool notlast = (k != n-1);
                if (k != m) {
@@ -774,6 +775,7 @@ void EigenvalueDecomposition<T,L>::hqr2 () {
                   q /= x;
                   r /= x;
                }
+
                s = std::sqrt(p * p + q * q + r * r);
                if (p < 0) {
                   s = -s;
@@ -1002,8 +1004,8 @@ void EigenvalueDecomposition<T,L>::hqr2 () {
  * ------------------------ */
 
    /** Check for symmetry, then construct the eigenvalue decomposition
-   @param A    Square matrix
-   @return     Structure to access D and V.
+       Structure to access D and V.
+   @param Arg    Square matrix
    */
 
 template<class T, class L> template <class E>
