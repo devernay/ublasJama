@@ -18,11 +18,11 @@ http://web.archive.org/web/20130221173516/http://math.nist.gov/javanumerics/jama
 Original Authors: see the Jama list of authors <http://math.nist.gov/javanumerics/jama/#Authors>.
 
 No optimization of the original code was done, but the functionality is here:
-    * Cholesky Decomposition of symmetric, positive definite matrices
-    * LU Decomposition (Gaussian elimination) of rectangular matrices
-    * QR Decomposition of rectangular matrices
-    * Eigenvalue Decomposition of both symmetric and nonsymmetric square matrices
-    * Singular Value Decomposition of rectangular matrices
+- Cholesky Decomposition of symmetric, positive definite matrices
+- LU Decomposition (Gaussian elimination) of rectangular matrices
+- QR Decomposition of rectangular matrices
+- Eigenvalue Decomposition of both symmetric and nonsymmetric square matrices
+- Singular Value Decomposition of rectangular matrices
 
 There are two test programs:
 - TestMatrix, in subdirectory test  - the original Jama tests, where only the relevant tests were kept.
