@@ -41,7 +41,7 @@ Changes since ublasJama 1.0.2.3:
 
 Changes since ublasJama 1.0.2.2:
 - from http://ojalgo.org/generated/org/ojalgo/matrix/jama/package-summary.html:
- -"The getL() and getU() methods of the LU decomposition should be modified.
+ - "The getL() and getU() methods of the LU decomposition should be modified.
    Introduce a new parameter d that is the minimum of m and n.
    Use that to set the column dimension of L and the row dimension of U."
  - Add a method isSymmetric() that exposes the already existing field issymmetric
