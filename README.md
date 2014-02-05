@@ -1,3 +1,6 @@
+ublasJama  [![Build Status](https://api.travis-ci.org/devernay/ublasJama.png?branch=master)](https://travis-ci.org/devernay/openfx) [![Coverage Status](https://coveralls.io/repos/devernay/ublasJama/badge.png?branch=master)](https://coveralls.io/r/devernay/openfx?branch=master)  [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/devernay/ublasjama/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+=========
+
 This is ublasJama 1.0.3.0, based on Jama 1.0.3
 
 ublasJama is translation of the public domain Jama (Java Matrix
